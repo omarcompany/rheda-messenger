@@ -1,0 +1,20 @@
+# ccls
+.ccls-cache
+
+# qmake
+Makefile
+.qmake.stash
+*.user*
+
+/installroot
+/lib/pkgconfig
+/*.list
+moc_*
+*.prl
+*.o
+*.moc
+*.a
+*.so
+*.so.*
+*.save
+*.autosave*
