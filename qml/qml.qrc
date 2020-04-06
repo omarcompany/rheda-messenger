@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>RegistrationDialog.qml</file>
+        <file>LoginDIalog.qml</file>
     </qresource>
 </RCC>
