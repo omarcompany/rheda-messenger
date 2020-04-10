@@ -9,6 +9,7 @@ Window {
     title: qsTr("Rheda messanger")
 
     Loader {
+        id: main
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
