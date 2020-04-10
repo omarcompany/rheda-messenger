@@ -4,13 +4,20 @@ import QtQuick.Window 2.2
 Window {
     id: window
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Rheda messanger")
+	width: 1280
+	height: 720
+	title: qsTr("Rheda messanger")
 
-    Loader {
-        id: dialogLoader
-        anchors.centerIn: parent
-        source: "qrc:/LoginDialog.qml"
-    }
+	ContactList {
+		id: contactList
+		height: parent.height
+		width: 400
+		anchors.left: parent.left
+	}
+
+	Loader {
+		id: dialogLoader
+		anchors.centerIn: parent
+		source: "qrc:/LoginDialog.qml"
+	}
 }
