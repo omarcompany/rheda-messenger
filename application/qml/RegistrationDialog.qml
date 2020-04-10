@@ -6,18 +6,13 @@ import QtQuick.Layouts 1.0
 
 ColumnLayout {
     width: 220
-    height: 77
     anchors {
-        horizontalCenter: parent.horizontalCenter
-        verticalCenter: parent.verticalCenter
-        margins: 3
+        centerIn: parent
     }
     spacing: 10
 
     TextField {
         id: userEmail
-        text: ""
-        inputMask: qsTr("")
         Layout.fillWidth: true
         placeholderText: "Email"
     }
@@ -61,11 +56,6 @@ ColumnLayout {
         text: qsTr("Already registered")
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         font.underline: true
-        fontSizeMode: Text.Fit
-        Layout.fillWidth: false
-        verticalAlignment: Text.AlignTop
-        horizontalAlignment: Text.AlignHCenter
-        textFormat: Text.AutoText
         font.pixelSize: 12
 
         MouseArea{
@@ -73,11 +63,7 @@ ColumnLayout {
             hoverEnabled: true
             cursorShape: "PointingHandCursor"
 
-            onClicked: {
-                main.source = "qrc:/LoginDialog.qml"
-            }
-
+            onClicked: dialogLoader.source = "qrc:/LoginDialog.qml"
         }
     }
-
 }
