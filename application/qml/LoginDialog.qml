@@ -68,6 +68,11 @@ ColumnLayout {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: "PointingHandCursor"
+
+            onClicked: {
+                main.source = "qrc:/RegistrationDialog.qml"
+            }
+
         }
     }
 }

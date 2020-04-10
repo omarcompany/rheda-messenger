@@ -57,4 +57,27 @@ ColumnLayout {
         }
     }
 
+    Text {
+        text: qsTr("Already registered")
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        font.underline: true
+        fontSizeMode: Text.Fit
+        Layout.fillWidth: false
+        verticalAlignment: Text.AlignTop
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.AutoText
+        font.pixelSize: 12
+
+        MouseArea{
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: "PointingHandCursor"
+
+            onClicked: {
+                main.source = "qrc:/LoginDialog.qml"
+            }
+
+        }
+    }
+
 }
