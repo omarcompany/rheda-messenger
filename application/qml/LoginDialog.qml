@@ -5,11 +5,9 @@ import QtQuick.Layouts 1.0
 
 
 ColumnLayout {
-    width: 200
+    width: 220
     anchors {
-        horizontalCenter: parent.horizontalCenter
-        verticalCenter: parent.verticalCenter
-        margins: 3
+        centerIn: parent
     }
     spacing: 10
 
@@ -49,25 +47,20 @@ ColumnLayout {
         onClicked: {
             connectButton.state = "Connecting"
         }
-
     }
 
     Text {
-        id: notRegisterLink
         text: qsTr("Not registered?")
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         font.underline: true
-        fontSizeMode: Text.Fit
-        Layout.fillWidth: false
-        verticalAlignment: Text.AlignTop
-        horizontalAlignment: Text.AlignHCenter
-        textFormat: Text.AutoText
         font.pixelSize: 12
 
         MouseArea{
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: "PointingHandCursor"
+
+            onClicked: dialogLoader.source = "qrc:/RegistrationDialog.qml"
         }
     }
 }
