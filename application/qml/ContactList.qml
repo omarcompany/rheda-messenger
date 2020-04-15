@@ -19,16 +19,16 @@ Item {
 	ListModel {
 		id: testDataModel
 		dynamicRoles: true
-		Component.onCompleted: {
-			for(let i = 0; i <= 15; i++) {
-				append({
-						   source: "/icons/no_avatar_simple.png",
-						   userName: "User Name",
-						   lastMessageText: "Last message"
-					   })
-			}
-		}
-	}
+        Component.onCompleted: {
+            for (var i = 0; i <= 15; i++) {
+                append({
+                           source: "/icons/no_avatar_simple.png",
+                           userName: "User Name",
+                           lastMessageText: "Last message"
+                       })
+            }
+        }
+    }
 
 	ListView {
 		height: parent.height - findBox.height

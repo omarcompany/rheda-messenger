@@ -5,7 +5,7 @@
         <file>LoginDialog.qml</file>
         <file>ContactList.qml</file>
         <file>ContactItem.qml</file>
-        <file>../icons/no_avatar.png</file>
-        <file>../icons/no_avatar_simple.png</file>
+        <file>icons/no_avatar_simple.png</file>
+        <file>icons/no_avatar.png</file>
     </qresource>
 </RCC>
