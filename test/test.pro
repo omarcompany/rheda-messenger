@@ -10,7 +10,3 @@ HEADERS += \
 
 SOURCES += \
     testcase.cpp
-
-DISTFILES += \
-    files.desktop \
-    rpm/files.spec
