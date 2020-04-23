@@ -18,3 +18,5 @@ moc_*
 *.so.*
 *.save
 *.autosave*
+build*
+

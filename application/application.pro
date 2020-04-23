@@ -11,7 +11,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         src/main.cpp
 
-RESOURCES += qml/qml.qrc
+RESOURCES += qml/desktop/qml.qrc
 
 QML_IMPORT_PATH =
 
