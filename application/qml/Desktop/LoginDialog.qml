@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
 
 
@@ -12,7 +12,7 @@ ColumnLayout {
     spacing: 10
 
     TextField {
-        id: userEmail
+        id: login
         Layout.fillWidth: true
         placeholderText: "Email"
     }
@@ -21,39 +21,36 @@ ColumnLayout {
         id: password
         Layout.fillWidth: true
         placeholderText: "Password"
-        echoMode: TextInput.PasswordEchoOnEdit
     }
 
-    TextField {
-        id: login
-        Layout.fillWidth: true
-        placeholderText: "Username"
+    CheckBox {
+        id: checkBox
+        text: qsTr("Remember me")
     }
 
     Button {
-        id: registerButton
+        id: connectButton
+        text: "Connect"
         Layout.fillWidth: true
-        enabled: userEmail.text.length && login.text.length && password.text.length
-        text: "Register"
 
         states: [
             State {
-                name: "Registering"
+                name: "Connecting"
                 PropertyChanges {
-                    target: registerButton
-                    text: "Registering..."
+                    target: connectButton
+                    text: "Connecting..."
                     enabled: false
                 }
             }
         ]
 
         onClicked: {
-            registerButton.state = "Registering"
+            connectButton.state = "Connecting"
         }
     }
 
     Text {
-        text: qsTr("Already registered")
+        text: qsTr("Not registered?")
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         font.underline: true
         font.pixelSize: 12
@@ -63,7 +60,7 @@ ColumnLayout {
             hoverEnabled: true
             cursorShape: "PointingHandCursor"
 
-            onClicked: dialogLoader.source = "qrc:/LoginDialog.qml"
+            onClicked: dialogLoader.source = "qrc:/RegistrationDialog.qml"
         }
     }
 }
