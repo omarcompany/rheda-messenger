@@ -3,7 +3,6 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
 
-
 ColumnLayout {
     width: 220
     anchors {

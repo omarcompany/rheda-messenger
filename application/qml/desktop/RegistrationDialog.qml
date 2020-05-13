@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
+import elevons.team 1.0
 
 ColumnLayout {
     width: 404
@@ -75,8 +76,10 @@ ColumnLayout {
                 }
             ]
 
+
             onButtonClicked: {
                 registerButton.state = "Registering"
+                Messenger.signUp(login.entryFieldText)
             }
         }
 

@@ -20,3 +20,5 @@ moc_*
 *.autosave*
 build*
 
+#local sserver
+/local_test-server
