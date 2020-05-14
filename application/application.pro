@@ -29,6 +29,6 @@ INCLUDEPATH += src
 
 HEADERS += \
 	src/requester.h \
-        src/uuidmanager.h \
         src/messenger.h \
-        src/serializer.h
+        src/serializer.h \
+        src/uuidmanager.h

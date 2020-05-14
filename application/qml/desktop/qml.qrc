@@ -14,7 +14,9 @@
         <file>IconButton.qml</file>
         <file>LabelField.qml</file>
         <file>SimpleButton.qml</file>
-        <file>TopPanel.qml</file>
+        <file>Logotype.qml</file>
         <file>icons/Title.svg</file>
+        <file>HomePage.qml</file>
+        <file>AuthenticationPage.qml</file>
     </qresource>
 </RCC>

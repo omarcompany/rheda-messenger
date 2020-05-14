@@ -2,10 +2,12 @@
 #include <QQmlApplicationEngine>
 
 #include "messenger.h"
+#include "uuidmanager.h"
 
+template <typename T>
 static QObject *messenger_api_factory(QQmlEngine *, QJSEngine *)
 {
-    return Messenger::instance();
+    return new T;
 }
 
 int main(int argc, char *argv[])
@@ -14,7 +16,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "Messenger", messenger_api_factory);
+    qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "Messenger", messenger_api_factory<Messenger>);
+    qmlRegisterSingletonType<UUIDManager>("elevons.team", 1, 0, "UUIDManager", messenger_api_factory<UUIDManager>);
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

@@ -9,9 +9,10 @@ class UUIDManager : public QObject
 public:
     explicit UUIDManager(QObject *parent = nullptr);
 
-    static bool exists();
+    Q_INVOKABLE bool exists();
+    Q_INVOKABLE void clear();
+
     static void create(const QString &id);
-    static void clear();
 };
 
 #endif // UUIDMANAGER_H

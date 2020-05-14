@@ -59,7 +59,7 @@ ColumnLayout {
             hoverEnabled: true
             cursorShape: "PointingHandCursor"
 
-            onClicked: dialogLoader.source = "qrc:/RegistrationDialog.qml"
+            onClicked: authenticationLoader.source = "qrc:/RegistrationDialog.qml"
         }
     }
 }

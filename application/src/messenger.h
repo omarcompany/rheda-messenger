@@ -9,17 +9,19 @@ class Messenger : public QObject
 {
     Q_OBJECT
 public:
-    static Messenger *instance();
+    explicit Messenger();
 
     // public API
     Q_INVOKABLE void signUp(const QString &name);
+
+signals:
+    void signUpComplete();
 
 private slots:
     void handleResponse(QNetworkReply *reply, Requester::ApiType api); // Общий для всех ответов
 
 private:
-    explicit Messenger();
-    void signUpReply(QNetworkReply *reply);
+    void handleSignupResponse(QNetworkReply *reply);
 
     Requester *m_requester;
 };
