@@ -26,14 +26,15 @@ public:
 
     explicit Requester(QObject *parent = nullptr);
 
-    QString getApi(Requester::ApiType api);
-    QNetworkRequest createRequest(const Requester::ApiType &api);
-    void sendRequest(const Requester::RequestType type, const Requester::ApiType &api, const QVariantMap &jsonData);
+    void sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData);
 
 signals:
     void replied(QNetworkReply *reply, const ApiType &api);
 
 private:
+    QNetworkRequest createRequest(const Requester::ApiType &api);
+    QString getApi(Requester::ApiType api);
+
     QNetworkAccessManager *m_manager;
 };
 

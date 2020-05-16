@@ -36,7 +36,7 @@ QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
     return request;
 }
 
-void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType &api, const QVariantMap &jsonData)
+void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData)
 {
     switch (type) {
     case POST:

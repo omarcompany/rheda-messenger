@@ -84,7 +84,20 @@ ColumnLayout {
     Connections {
         target: Messenger
         onSignUpComplete: {
-             mainPageLoader.source = "qrc:/HomePage.qml"
+            mainPageLoader.source = "qrc:/HomePage.qml"
+        }
+        onError: {
+            switch (errorType) {
+            case Messenger.NoNetWorkConnect:
+                text.labelText = qsTr("Host not found or no network connection")
+                break
+            case Messenger.NotFound:
+                text.labelText = qsTr("404:The server cannot process the request")
+                break
+            case Messenger.ServerNotAvailable:
+                text.labelText = qsTr("503:Server is not available")
+                break
+            }
         }
     }
 }
