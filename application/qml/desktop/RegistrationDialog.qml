@@ -5,9 +5,6 @@ import elevons.team 1.0
 
 ColumnLayout {
     width: 404
-    anchors {
-        centerIn: parent
-    }
     spacing: 40
 
     ColumnLayout {
@@ -39,20 +36,6 @@ ColumnLayout {
             entryFieldTitleText: "Username"
             entryFieldPlaceHolderText: "Введите Username"
         }
-
-        EntryField {
-            id: userEmail
-            width: parent.width
-            entryFieldTitleText: "Email"
-            entryFieldPlaceHolderText: "Введите Email"
-        }
-
-        PasswordField {
-            id: password
-            width: parent.width
-            passwordFieldTitleText: "Password"
-            passwordFieldPlaceHolderText: "Введите пароль"
-        }
     }
 
     ColumnLayout {
@@ -63,7 +46,7 @@ ColumnLayout {
             id: registerButton
             height: 50
             buttonText: "Create account"
-            enabled: userEmail.entryFieldText.length && login.entryFieldText.length && password.passwordFieldText.length
+            enabled: login.entryFieldText.length
 
             states: [
                 State {
@@ -76,26 +59,33 @@ ColumnLayout {
                 }
             ]
 
-
             onButtonClicked: {
                 registerButton.state = "Registering"
                 Messenger.signUp(login.entryFieldText)
             }
         }
 
-        Text {
-            text: qsTr("Already registered")
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            font.underline: true
-            font.pixelSize: 12
+//        Text {
+//            text: qsTr("Already registered")
+//            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+//            font.underline: true
+//            font.pixelSize: 12
 
-            MouseArea{
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: "PointingHandCursor"
+//            MouseArea{
+//                anchors.fill: parent
+//                hoverEnabled: true
+//                cursorShape: "PointingHandCursor"
 
-                onClicked: dialogLoader.source = "qrc:/LoginDialog.qml"
-            }
+//                onClicked: authenticationLoader.source = "qrc:/LoginDialog.qml"
+//            }
+//        }
+    }
+
+    Connections {
+        target: Messenger
+        onSignUpComplete: {
+             mainPageLoader.source = "qrc:/HomePage.qml"
         }
     }
 }
+

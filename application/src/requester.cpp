@@ -7,7 +7,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QJSEngine>
 
 #include "uuidmanager.h"
 #include "serializer.h"
@@ -30,7 +29,7 @@ QString Requester::getApi(Requester::ApiType api)
 QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
 {
     QNetworkRequest request;
-    QString url = m_url.append(DOMAIN).append(getApi(api));
+    QString url = DOMAIN + getApi(api);
     request.setUrl(QUrl(url));
     request.setRawHeader("Content-Type","application/json");
 
@@ -40,7 +39,7 @@ QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
 void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType &api, const QVariantMap &jsonData)
 {
     switch (type) {
-    case POST: {
+    case POST:
         QNetworkRequest request = createRequest(api);
         QJsonObject obj = QJsonObject::fromVariantMap(jsonData);
         QJsonDocument doc(obj);
@@ -49,9 +48,5 @@ void Requester::sendRequest(const Requester::RequestType type, const Requester::
         QNetworkReply *reply;
         reply = m_manager->post(request, postDataByteArray);
         emit replied(reply, api);
-    }
-
-    default:
-        break;
     }
 }

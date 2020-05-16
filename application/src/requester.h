@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-class QJSValue;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QNetworkRequest;
@@ -36,7 +35,6 @@ signals:
 
 private:
     QNetworkAccessManager *m_manager;
-    QString m_url;
 };
 
 #endif // REQUEST_H

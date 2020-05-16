@@ -13,11 +13,6 @@ Messenger::Messenger()
     connect(m_requester, &Requester::replied, this, &Messenger::handleResponse);
 }
 
-Messenger *Messenger::instance()
-{
-    return new Messenger();
-}
-
 void Messenger::signUp(const QString &name)
 {
     QVariantMap jsonData;
@@ -30,19 +25,19 @@ void Messenger::handleResponse(QNetworkReply *reply, Requester::ApiType api)
 {
     connect(reply, &QNetworkReply::finished, [=](){
         switch (api) {
-        case Requester::SIGN_UP: {
-            signUpReply(reply);
-            break;
-        }
-
-        default:
+        case Requester::SIGN_UP:
+            handleSignupResponse(reply);
             break;
         }
         reply->deleteLater();
     });
 }
 
-void Messenger::signUpReply(QNetworkReply *reply)
+void Messenger::handleSignupResponse(QNetworkReply *reply)
 {
-    UUIDManager::create(Serializer::getId(reply->readAll()));
+    QString id = Serializer::getId(reply->readAll());
+    if (!id.isEmpty()) {
+        UUIDManager::create(Serializer::getId(reply->readAll()));
+        emit signUpComplete();
+    }
 }
