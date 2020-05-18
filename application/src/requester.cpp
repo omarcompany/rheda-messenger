@@ -11,7 +11,7 @@
 #include "uuidmanager.h"
 #include "serializer.h"
 
-static const QString DOMAIN{"https://rheda.herokuapp.com"};
+static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
 
 Requester::Requester(QObject *parent)
     : QObject{parent}
@@ -29,7 +29,7 @@ QString Requester::getApi(Requester::ApiType api)
 QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
 {
     QNetworkRequest request;
-    QString url = DOMAIN + getApi(api);
+    QString url = RHEDA_DOMAIN + getApi(api);
     request.setUrl(QUrl(url));
     request.setRawHeader("Content-Type","application/json");
 
