@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
     qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "Messenger", messenger_api_factory<Messenger>);
     qmlRegisterSingletonType<UUIDManager>("elevons.team", 1, 0, "UUIDManager", messenger_api_factory<UUIDManager>);
 
