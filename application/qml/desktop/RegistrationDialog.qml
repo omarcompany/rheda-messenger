@@ -23,7 +23,8 @@ Column {
     }
 
     Column {
-        spacing: 20
+        width: parent.width
+        spacing: 10
 
         EntryField {
             id: login
@@ -32,11 +33,6 @@ Column {
             entryFieldPlaceHolderText: qsTr("Enter the username")
             enabled: !errorState
         }
-    }
-
-    Column {
-        width: parent.width
-        spacing: 10
 
         AuthenticationButton {
             id: registrationButton
