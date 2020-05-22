@@ -8,6 +8,13 @@ Window {
     width: 1280
     height: 720
     title: qsTr("Rheda messenger")
+    minimumWidth: 480
+    minimumHeight: 720
+
+    QtObject {
+        id: constants
+        readonly property string registrationText: qsTr("Create an account to start messanging")
+    }
 
     Logotype {
         anchors {

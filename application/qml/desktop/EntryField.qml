@@ -12,6 +12,8 @@ ColumnLayout {
     property int entryFieldLineSize: parent.width
     property int entryFieldEchoMode: TextInput.Normal
 
+    property alias text: textField.text
+
     id: root
     spacing: 10
 

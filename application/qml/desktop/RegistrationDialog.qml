@@ -3,100 +3,103 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.0
 import elevons.team 1.0
 
-ColumnLayout {
-    width: 404
-    spacing: 40
+Column {
+    spacing: 30
 
-    ColumnLayout {
-        width: parent.width
-        spacing: 20
-
-        LabelField {
-            id: title
-            height: labelFontPixelSize
-            labelFontPixelSize: 48
+    Column {
+        InformationLabel {
+            text: qsTr("Hello!")
+            font.pixelSize: 48
+            font.bold: true
         }
 
-        LabelField {
-            id: text
-            height: labelFontPixelSize * 2
-            labelText: "Create an account to start messanging"
-            labelFontPixelSize: 30
-            labelFontBold: false
+        InformationLabel {
+            id: mainInformationLabel
+            text: textMainIformation
+            font.pixelSize: 30
+            width: registrationButton.width
+            errorHighlighted: errorState
         }
     }
 
-    ColumnLayout {
-        width: parent.width
+    Column {
         spacing: 20
 
         EntryField {
             id: login
-            width: parent.width
-            entryFieldTitleText: "Username"
-            entryFieldPlaceHolderText: "Введите Username"
+            width: registrationButton.width
+            entryFieldTitleText: qsTr("Username")
+            entryFieldPlaceHolderText: qsTr("Enter the username")
+            enabled: !errorState
         }
     }
 
-    ColumnLayout {
+    Column {
         width: parent.width
         spacing: 10
 
-        SimpleButton {
-            id: registerButton
-            height: 50
-            buttonText: "Create account"
-            enabled: login.entryFieldText.length
+        AuthenticationButton {
+            id: registrationButton
 
-            states: [
-                State {
-                    name: "Registering"
+            width: minimumWidth - 80
+
+            onClicked: {
+                switch (state) {
+                case "Default":
+                    Messenger.signUp(login.entryFieldText)
+                    state = "Waiting"
+                    break
+                case "Error":
+                    textMainIformation = constants.registrationText
+                    errorState = false
+                    login.text = ""
+                    state = "Default"
+                }
+            }
+
+            state: "Default"
+
+            states: [ State {
+                    name: "Default"
                     PropertyChanges {
-                        target: registerButton
-                        buttonText: "Registering..."
+                        target: registrationButton
+                        text: qsTr("Create account")
+                        enabled: login.entryFieldText.length
+                    }
+                },
+                State {
+                    name: "Waiting"
+                    PropertyChanges {
+                        target: registrationButton
+                        text: qsTr("Registering...")
                         enabled: false
+                    }
+                },
+                State {
+                    name: "Error"
+                    when: errorState
+                    PropertyChanges {
+                        target: registrationButton
+                        text: qsTr("Retry")
+                        enabled: true
                     }
                 }
             ]
-
-            onButtonClicked: {
-                registerButton.state = "Registering"
-                Messenger.signUp(login.entryFieldText)
-            }
         }
 
-//        Text {
-//            text: qsTr("Already registered")
-//            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-//            font.underline: true
-//            font.pixelSize: 12
+        Text {
+            text: qsTr("Already registered")
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.underline: true
+            font.pixelSize: 12
+            visible: false
 
-//            MouseArea{
-//                anchors.fill: parent
-//                hoverEnabled: true
-//                cursorShape: "PointingHandCursor"
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: "PointingHandCursor"
 
-//                onClicked: authenticationLoader.source = "qrc:/LoginDialog.qml"
-//            }
-//        }
-    }
-
-    Connections {
-        target: Messenger
-        onSignUpComplete: {
-            mainPageLoader.source = "qrc:/HomePage.qml"
-        }
-        onError: {
-            switch (errorType) {
-            case Messenger.NoNetWorkConnect:
-                text.labelText = qsTr("Host not found or no network connection")
-                break
-            case Messenger.NotFound:
-                text.labelText = qsTr("404:The server cannot process the request")
-                break
-            case Messenger.ServerNotAvailable:
-                text.labelText = qsTr("503:Server is not available")
-                break
+                onClicked: authenticationLoader.source = "qrc:/LoginDialog.qml"
             }
         }
     }
