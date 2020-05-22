@@ -12,8 +12,8 @@
         <file>icons/view-eye-svgrepo-com 1.svg</file>
         <file>icons/Group.svg</file>
         <file>IconButton.qml</file>
-        <file>LabelField.qml</file>
-        <file>SimpleButton.qml</file>
+        <file>InformationLabel.qml</file>
+        <file>AuthenticationButton.qml</file>
         <file>Logotype.qml</file>
         <file>icons/Title.svg</file>
         <file>HomePage.qml</file>
