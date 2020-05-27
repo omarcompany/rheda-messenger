@@ -47,6 +47,6 @@ void Requester::sendRequest(const Requester::RequestType type, const Requester::
 
         QNetworkReply *reply;
         reply = m_manager->post(request, postDataByteArray);
-        emit replied(reply, api);
+        emit replied(reply);
     }
 }

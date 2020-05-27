@@ -29,7 +29,7 @@ public:
     void sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData);
 
 signals:
-    void replied(QNetworkReply *reply, const ApiType &api);
+    void replied(QNetworkReply *reply);
 
 private:
     QNetworkRequest createRequest(const Requester::ApiType &api);

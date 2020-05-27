@@ -26,10 +26,11 @@ signals:
     void error(MessengerError errorType);
 
 private slots:
-    void handleResponse(QNetworkReply *reply, Requester::ApiType api); // Общий для всех ответов
+    void handleResponse(QNetworkReply *reply); // Общий для всех ответов
 
 private:
     void handleSignupResponse(QNetworkReply *reply);
+    Requester::ApiType getApiType(const QUrl &url);
     void handleError(int code);
 
     Requester *m_requester;
