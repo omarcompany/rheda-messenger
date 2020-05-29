@@ -12,6 +12,7 @@ public:
 
 private slots:
     void checkDatabase_test();
+    void serializer_test();
 };
 
 #endif // TESTCASE_H

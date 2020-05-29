@@ -3,12 +3,15 @@
 
 #include <QObject>
 
+struct Message;
+
 class Serializer : public QObject
 {
 public:
-    Serializer(QObject *parent = nullptr);
+    Serializer() = delete;
 
     static QString getId(const QByteArray &jsonData);
+    static QList<Message> deserializeToMessageList(const QByteArray &jsonData);
 };
 
 #endif // SERIALIZER_H
