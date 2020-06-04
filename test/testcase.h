@@ -9,6 +9,9 @@ class TestCase : public QObject
 public:
     TestCase();
     ~TestCase();
+
+private slots:
+    void checkDatabase_test();
 };
 
 #endif // TESTCASE_H
