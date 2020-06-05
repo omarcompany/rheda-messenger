@@ -13,6 +13,7 @@ public:
 private slots:
     void checkDatabase_test();
     void serializer_test();
+    void serializer_deserializerToUser_test();
 };
 
 #endif // TESTCASE_H

@@ -10,6 +10,7 @@
 #include "message.h"
 
 static const QString TEST_MESSAGE_FILE_PATH = QString(PRO_FILE_PWD) + "/test_messages.json";
+static const QString TEST_USER_FILE_PATH = QString(PRO_FILE_PWD) + "/test_user.json";
 static const int CHECK_TIME = 2;
 
 TestCase::TestCase()
@@ -73,6 +74,20 @@ void TestCase::serializer_test()
 
             iter++;
         }
+    } else {
+        QFAIL("Error reading file!");
+    }
+}
+
+void TestCase::serializer_deserializerToUser_test()
+{
+    QFile testFile(TEST_USER_FILE_PATH);
+    if (testFile.open(QIODevice::ReadOnly)) {
+        User testUser("1234", "ivan");
+        QByteArray test_jsonData = testFile.readAll();
+        User user = Serializer::deserializeToUser(test_jsonData);
+        QCOMPARE(user.id, testUser.id);
+        QCOMPARE(user.name, testUser.name);
     } else {
         QFAIL("Error reading file!");
     }
