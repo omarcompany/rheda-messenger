@@ -30,7 +30,7 @@ Item {
             bottom: entryField.bottom
             bottomMargin: entryField.entryFieldFontPixelSize / 3
         }
-        iconButtonSource: "qrc:/icons/view-eye-svgrepo-com 1.svg"
+        iconButtonSource: "qrc:/icons/svgs/icon-show-password.svg"
 
         onButtonPressed: {
             entryField.entryFieldEchoMode = TextInput.Normal
