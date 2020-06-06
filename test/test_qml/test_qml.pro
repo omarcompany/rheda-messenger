@@ -8,9 +8,11 @@ PATH_APP = ../../application/src
 INCLUDEPATH += $$PATH_APP
 
 HEADERS += \
-    testcase.h
+    $$PATH_APP/messagemodel.h \
+    test_message_model.h
 
 SOURCES += \
-    testcase.cpp
+    $$PATH_APP/messagemodel.cpp \
+    test_message_model.cpp
 
 DISTFILES += *.qml

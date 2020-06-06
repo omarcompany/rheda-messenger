@@ -24,7 +24,7 @@ Window {
         }
     }
 
-	Loader {
+      Loader {
         id: mainPageLoader
         anchors.fill: parent
     }

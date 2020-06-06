@@ -9,12 +9,13 @@ CONFIG += c++14
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-	src/databaseengine.cpp \
-	src/main.cpp \
-	src/requester.cpp \
-	src/uuidmanager.cpp \
-	src/messenger.cpp \
-	src/serializer.cpp
+      src/databaseengine.cpp \
+      src/main.cpp \
+      src/messagemodel.cpp \
+      src/requester.cpp \
+      src/uuidmanager.cpp \
+      src/messenger.cpp \
+      src/serializer.cpp
 
 RESOURCES += qml/desktop/qml.qrc
 
@@ -31,10 +32,11 @@ android: include($$(HOME)/Android/Sdk/android_openssl/openssl.pri)
 INCLUDEPATH += src
 
 HEADERS += \
-	src/databaseengine.h \
-	src/message.h \
-	src/requester.h \
-	src/messenger.h \
-	src/serializer.h \
-	src/user.h \
-	src/uuidmanager.h
+      src/databaseengine.h \
+      src/message.h \
+      src/messagemodel.h \
+      src/requester.h \
+      src/messenger.h \
+      src/serializer.h \
+      src/user.h \
+      src/uuidmanager.h
