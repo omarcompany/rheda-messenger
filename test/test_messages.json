@@ -1,0 +1,8 @@
+{
+  "messages":
+  [
+    {"authorName": "Ivan",    "authorId": "3621897462", "timestamp": "2013-02-05T19:23:12+00:00", "text": "Andryukha, we have a corpse."},
+    {"authorName": "Nikolay", "authorId": "2897430847", "timestamp": "2012-03-25T17:26:34+00:00", "text": "Possibly a crime!"},
+    {"authorName": "Michail", "authorId": "5465484984", "timestamp": "2011-04-15T13:25:45+00:00", "text": "On the horses!"}
+  ]
+}
