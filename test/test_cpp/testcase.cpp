@@ -9,6 +9,7 @@
 
 #include "serializer.h"
 #include "message.h"
+#include "uuidmanager.h"
 
 static const QString TEST_MESSAGE_FILE_PATH = QString(PRO_FILE_PWD) + "/test_messages.json";
 static const QString TEST_USER_FILE_PATH = QString(PRO_FILE_PWD) + "/test_user.json";
@@ -95,6 +96,27 @@ void TestCase::serializer_deserializerToUser_test()
     } else {
         QFAIL("Error reading file!");
     }
+}
+
+
+void TestCase::test_uuid_manager()
+{
+    UuidManager uuid;
+
+    QString id = "ef2c325c-d12a-4edc-9b0b-dea0dff7b489";
+
+    QCOMPARE(UuidManager::getId(), QString());
+
+    UuidManager::create(id);
+    QCOMPARE(UuidManager::getId(), id);
+    QCOMPARE(uuid.exists(), true);
+    uuid.clear();
+
+    QCOMPARE(uuid.exists(), false);
+    UuidManager::create(QString());
+    QCOMPARE(UuidManager::getId(), QString());
+    QCOMPARE(uuid.exists(), false);
+    uuid.clear();
 }
 
 QTEST_APPLESS_MAIN(TestCase)
