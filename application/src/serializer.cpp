@@ -10,6 +10,7 @@
 #include <QDateTime>
 
 #include "message.h"
+#include "user.h"
 
 QString Serializer::getId(const QByteArray &jsonData)
 {
@@ -43,4 +44,13 @@ QList<Message> Serializer::deserializeToMessageList(const QByteArray &jsonData)
     }
 
     return messageList;
+}
+
+User Serializer::deserializeToUser(const QByteArray &jsonData)
+{
+    QJsonObject jsonObj = QJsonDocument::fromJson(jsonData).object();
+    User user;
+    user.id = jsonObj["id"].toString();
+    user.name = jsonObj["name"].toString();
+    return user;
 }
