@@ -3,6 +3,7 @@
 
 #include "messenger.h"
 #include "uuidmanager.h"
+#include "messagemodel.h"
 
 template <typename T>
 static QObject *messenger_api_factory(QQmlEngine *, QJSEngine *)
