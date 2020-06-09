@@ -5,13 +5,13 @@
 #include <QtTest>
 #include <QDebug>
 #include <QDir>
+#include <QVector>
 
 #include "serializer.h"
 #include "message.h"
 
 static const QString TEST_MESSAGE_FILE_PATH = QString(PRO_FILE_PWD) + "/test_messages.json";
 static const QString TEST_USER_FILE_PATH = QString(PRO_FILE_PWD) + "/test_user.json";
-static const int CHECK_TIME = 2;
 
 TestCase::TestCase()
 {
@@ -25,31 +25,35 @@ TestCase::~TestCase()
 
 void TestCase::checkDatabase_test()
 {
-    qDebug() << "Starting test of DatabaseEngine class's methods";
-    qDebug() << "Add new user Ivan";
-
-    User ivan("1234", "ivan");
-    DatabaseEngine db1;
-    db1.openDatabase(ivan);
-    QString filePath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
-            "/Database/" + ivan.id + ".db";
-
-    qDebug() << "Users Ivan have been registered. "
-             << QString("After %1 seconds user Ivan data will be showed on screen").arg(CHECK_TIME);
-    qDebug() << "Please, check database" << filePath;
-    QTest::qSleep(1000 * CHECK_TIME);
-
-    qDebug() << db1.getUser().name;
-
-    qDebug() << QString("After %1 seconds user Ivan will be removed!").arg(CHECK_TIME / 2);
-    qDebug() << "Please, check debug!";
-    QTest::qSleep(500 * CHECK_TIME);
-
-    db1.closeDatabase();
-    QFile::remove(filePath);
-
-    qDebug() << "Please, check debug! User have been removed.";
-    qDebug() << "End of DatabaseEngine class's methods test";
+    User ivan("1234", "ivan"), emptyUser, dima, vlad;
+    dima.id = "5678";
+    vlad.name = "vlad";
+    QCOMPARE(ivan.isValid(), true);
+    QCOMPARE(emptyUser.isValid(), false);
+    QCOMPARE(dima.isValid(), false);
+    QCOMPARE(vlad.isValid(), false);
+    QList<User> userList;
+    userList << ivan << emptyUser << dima << vlad;
+    DatabaseEngine database;
+    for (auto user : userList) {
+        database.openDatabase(user);
+        QString databaseLocation = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
+                "/Database/" + user.id + ".db";
+        if (user.isValid()) {
+            if (QFile::exists(databaseLocation)) {
+                QCOMPARE(user.name, database.getUser().name);
+                database.closeDatabase();
+                database.openDatabase(user);
+                QCOMPARE(user.name, database.getUser().name);
+                database.closeDatabase();
+                QVERIFY(QFile::remove(databaseLocation));
+            } else {
+                QFAIL("File does not exist");
+            }
+        } else {
+            QVERIFY(!QFile::exists(databaseLocation));
+        }
+    }
 }
 
 void TestCase::serializer_test()

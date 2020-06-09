@@ -9,6 +9,7 @@ PATH_APP = ../../application/src
 INCLUDEPATH += $$PATH_APP
 
 HEADERS += \
+    ../../application/src/user.h \
     testcase.h \
     $$PATH_APP/databaseengine.h \
     $$PATH_APP/serializer.h

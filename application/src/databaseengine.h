@@ -11,11 +11,11 @@ class DatabaseEngine
 public:
     DatabaseEngine();
     User getUser();
-    void openDatabase(const User &user);
+    bool openDatabase(const User &user);
     void closeDatabase();
 
 private:
-    void createDatabase(const User &user);
+    bool createDatabase(const User &user);
     bool initTableUser(const User &user);
     bool isValid();
 
