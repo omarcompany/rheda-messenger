@@ -15,7 +15,7 @@ DatabaseEngine::DatabaseEngine()
     m_database = QSqlDatabase::addDatabase("QSQLITE");
 }
 
-void DatabaseEngine::createDatabase(const User &user)
+bool DatabaseEngine::createDatabase(const User &user)
 {
     QDir way;
     way.mkpath(DATABASE_LOCATION);
@@ -23,7 +23,9 @@ void DatabaseEngine::createDatabase(const User &user)
     m_database.open();
     if (!initTableUser(user)) {
         qDebug() << "Data are not entered";
+        return false;
     }
+    return true;
 }
 
 User DatabaseEngine::getUser()
@@ -41,15 +43,15 @@ User DatabaseEngine::getUser()
     return User();
 }
 
-void DatabaseEngine::openDatabase(const User &user)
+bool DatabaseEngine::openDatabase(const User &user)
 {
     if (!user.isValid()) {
         qDebug() << "The User structure is incomplete";
-        return;
+        return false;
     }
     if (m_database.isOpen()) {
         qDebug() << "The database is open";
-        return;
+        return false;
     }
     QString databasePath = DATABASE_LOCATION + "/" + user.id + ".db";
     if (QFile::exists(databasePath)) {
@@ -57,13 +59,16 @@ void DatabaseEngine::openDatabase(const User &user)
         if (m_database.isValid()) {
             m_database.open();
             if (isValid()) {
-                return;
+                return true;
             }
             m_database.close();
         }
         QFile::remove(databasePath);
     }
-    createDatabase(user);
+    if (createDatabase(user)) {
+        return true;
+    }
+    return false;
 }
 
 void DatabaseEngine::closeDatabase()
