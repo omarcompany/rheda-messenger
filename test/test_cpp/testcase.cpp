@@ -57,6 +57,30 @@ void TestCase::checkDatabase_test()
     }
 }
 
+void TestCase::databaseEngine_updateMessageList_test()
+{
+    User user("12345678", "user");
+    DatabaseEngine database;
+    if (database.openDatabase(user)) {
+        Message firstMessage( "ivan", "1234", "2020-06-10", "Hello!"),
+                secondMessage("vova", "5678", "2020-06-11", "Bye!"),
+                thirdMessage( "",     "7946", "2020-06-13", "Goodbye!");
+        QCOMPARE(firstMessage.isValid(), true);
+        QCOMPARE(secondMessage.isValid(), true);
+        QCOMPARE(thirdMessage.isValid(), false);
+        QList<Message> messageList;
+        messageList << firstMessage;
+        database.refreshTable(messageList);
+        messageList << secondMessage;
+        database.refreshTable(messageList);
+        database.closeDatabase();
+        QVERIFY(QFile::remove(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
+                              "/Database/" + user.id + ".db"));
+    } else {
+        QFAIL("The database is not open");
+    }
+}
+
 void TestCase::serializer_test()
 {
     QFile testFile(TEST_MESSAGE_FILE_PATH);
