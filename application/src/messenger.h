@@ -22,7 +22,8 @@ public:
 
     // public API
     Q_INVOKABLE void signUp(const QString &name);
-    Q_INVOKABLE void signOut();
+    Q_INVOKABLE void signOut();   
+    Q_INVOKABLE void sendMessage(const QString &recipientId, const QString &text);
 
     QString userId() const;
 

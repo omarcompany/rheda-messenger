@@ -45,6 +45,16 @@ void Messenger::setUserId(QString userId)
     emit userIdChanged(m_userId);
 }
 
+void Messenger::sendMessage(const QString &recipientId, const QString &text)
+{
+    QVariantMap jsonData;
+    jsonData["text"]      = text;
+    jsonData["sender"]    = userId();
+    jsonData["recipient"] = recipientId;
+
+    m_requester->sendRequest(Requester::POST, Requester::SEND_MESSAGE, jsonData);
+}
+
 void Messenger::handleResponse(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, [=](){
@@ -52,6 +62,9 @@ void Messenger::handleResponse(QNetworkReply *reply)
             switch (getApiType(reply->url())) {
             case Requester::SIGN_UP:
                 handleSignupResponse(reply);
+                break;
+            case Requester::SEND_MESSAGE:
+                qDebug() << "Response from server: message saved ";
                 break;
             }
         } else {
@@ -77,10 +90,11 @@ Requester::ApiType Messenger::getApiType(const QUrl &url)
 
     if (apiUrl == "signup")
         return Requester::SIGN_UP;
+    if (apiUrl == "message")
+        return Requester::SEND_MESSAGE;
     /*
      * Another api types
      */
-
 }
 
 void Messenger::handleError(int code)
