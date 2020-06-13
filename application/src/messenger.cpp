@@ -44,7 +44,7 @@ void Messenger::handleSignupResponse(QNetworkReply *reply)
 {
     QString id = Serializer::getId(reply->readAll());
     if (!id.isEmpty()) {
-        UUIDManager::create(id);
+        UuidManager::create(id);
         emit signUpComplete();
     }
 }
