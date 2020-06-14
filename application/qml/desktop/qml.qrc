@@ -5,18 +5,15 @@
         <file>LoginDialog.qml</file>
         <file>ContactList.qml</file>
         <file>ContactItem.qml</file>
-        <file>icons/no_avatar_simple.png</file>
-        <file>icons/no_avatar.png</file>
         <file>EntryField.qml</file>
         <file>PasswordField.qml</file>
-        <file>icons/view-eye-svgrepo-com 1.svg</file>
-        <file>icons/Group.svg</file>
         <file>IconButton.qml</file>
         <file>InformationLabel.qml</file>
         <file>AuthenticationButton.qml</file>
         <file>Logotype.qml</file>
-        <file>icons/Title.svg</file>
         <file>HomePage.qml</file>
         <file>AuthenticationPage.qml</file>
+        <file>icons/svgs/icon-logotype.svg</file>
+        <file>icons/svgs/icon-show-password.svg</file>
     </qresource>
 </RCC>

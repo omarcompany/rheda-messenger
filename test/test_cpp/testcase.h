@@ -9,6 +9,12 @@ class TestCase : public QObject
 public:
     TestCase();
     ~TestCase();
+
+private slots:
+    void checkDatabase_test();
+    void serializer_test();
+    void serializer_deserializerToUser_test();
+    void test_uuid_manager();
 };
 
 #endif // TESTCASE_H

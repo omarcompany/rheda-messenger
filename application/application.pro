@@ -2,18 +2,20 @@ TEMPLATE = app
 
 TARGET = rheda-messenger
 
-QT += quick network
+QT += quick sql network
 
 CONFIG += c++14
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        src/main.cpp \
-        src/requester.cpp \
-        src/uuidmanager.cpp \
-        src/messenger.cpp \
-        src/serializer.cpp
+      src/databaseengine.cpp \
+      src/main.cpp \
+      src/messagemodel.cpp \
+      src/requester.cpp \
+      src/uuidmanager.cpp \
+      src/messenger.cpp \
+      src/serializer.cpp
 
 RESOURCES += qml/desktop/qml.qrc
 
@@ -25,10 +27,16 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+android: include($$(HOME)/Android/Sdk/android_openssl/openssl.pri)
+
 INCLUDEPATH += src
 
 HEADERS += \
-	src/requester.h \
-        src/messenger.h \
-        src/serializer.h \
-        src/uuidmanager.h
+      src/databaseengine.h \
+      src/message.h \
+      src/messagemodel.h \
+      src/requester.h \
+      src/messenger.h \
+      src/serializer.h \
+      src/user.h \
+      src/uuidmanager.h

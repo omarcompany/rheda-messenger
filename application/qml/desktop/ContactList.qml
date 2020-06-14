@@ -22,7 +22,6 @@ Item {
         Component.onCompleted: {
             for (var i = 0; i <= 15; i++) {
                 append({
-                           source: "/icons/no_avatar_simple.png",
                            userName: "User Name",
                            lastMessageText: "Last message"
                        })

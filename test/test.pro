@@ -1,12 +1,5 @@
-TEMPLATE = app
-TARGET = rheda-messenger-tests
-QT += testlib
-CONFIG += qt console warn_on depend_includepath testcase
+TEMPLATE = subdirs
 
-INCLUDEPATH += $$PATH_APP
-
-HEADERS += \
-    testcase.h
-
-SOURCES += \
-    testcase.cpp
+SUBDIRS = \
+    test_cpp \
+    test_qml

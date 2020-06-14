@@ -3,12 +3,14 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QList>
+#include <QSharedPointer>
+#include <QDateTime>
 
-Serializer::Serializer(QObject *parent)
-    : QObject{parent}
-{
-
-}
+#include "message.h"
+#include "user.h"
 
 QString Serializer::getId(const QByteArray &jsonData)
 {
@@ -21,4 +23,34 @@ QString Serializer::getId(const QByteArray &jsonData)
 
     QString id = jsonObj["id"].toString();
     return id;
+}
+
+QList<Message> Serializer::deserializeToMessageList(const QByteArray &jsonData)
+{
+    QJsonArray jsonArray = QJsonDocument::fromJson(jsonData).object().value("messages").toArray();
+
+    QList<Message> messageList;
+    for (auto jsonMessage : jsonArray) {
+        Message message;
+
+        message.authorName = jsonMessage.toObject().value("authorName").toString();
+        message.authorId   = jsonMessage.toObject().value("authorId").toString();
+        message.text       = jsonMessage.toObject().value("text").toString();
+
+        QString dateTime   = jsonMessage.toObject().value("timestamp").toString();
+        message.timestamp  = QDateTime::fromString(dateTime, Qt::ISODate);
+
+        messageList.append(message);
+    }
+
+    return messageList;
+}
+
+User Serializer::deserializeToUser(const QByteArray &jsonData)
+{
+    QJsonObject jsonObj = QJsonDocument::fromJson(jsonData).object();
+    User user;
+    user.id = jsonObj["id"].toString();
+    user.name = jsonObj["name"].toString();
+    return user;
 }

@@ -7,6 +7,9 @@
 #include "uuidmanager.h"
 #include "serializer.h"
 
+static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
+static const QString API_VERSION{"/api/"};
+
 Messenger::Messenger()
     : m_requester{new Requester(this)}
 {
@@ -21,11 +24,11 @@ void Messenger::signUp(const QString &name)
     m_requester->sendRequest(Requester::POST, Requester::SIGN_UP, jsonData);
 }
 
-void Messenger::handleResponse(QNetworkReply *reply, Requester::ApiType api)
+void Messenger::handleResponse(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, [=](){
-       if (reply->error() == QNetworkReply::NoError) {
-            switch (api) {
+        if (reply->error() == QNetworkReply::NoError) {
+            switch (getApiType(reply->url())) {
             case Requester::SIGN_UP:
                 handleSignupResponse(reply);
                 break;
@@ -41,9 +44,22 @@ void Messenger::handleSignupResponse(QNetworkReply *reply)
 {
     QString id = Serializer::getId(reply->readAll());
     if (!id.isEmpty()) {
-        UUIDManager::create(id);
+        UuidManager::create(id);
         emit signUpComplete();
     }
+}
+
+Requester::ApiType Messenger::getApiType(const QUrl &url)
+{
+    QString apiUrl = url.toString();
+    apiUrl.replace(RHEDA_DOMAIN + API_VERSION, "");
+
+    if (apiUrl == "signup")
+        return Requester::SIGN_UP;
+    /*
+     * Another api types
+     */
+
 }
 
 void Messenger::handleError(int code)
