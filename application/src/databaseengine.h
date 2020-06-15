@@ -7,16 +7,28 @@
 #include "user.h"
 
 class Message;
-class DatabaseEngine
+class DatabaseEngine : public QObject
 {
+    Q_OBJECT
 public:
     DatabaseEngine();
     User getUser();
     bool openDatabase(const User &user);
     void refreshTable(const QList<Message>);
+    QList<Message> getMessageList();
     void closeDatabase();
 
+signals:
+    void dataChanged();
+
 private:
+    enum MessagePart {
+        AuthorName,
+        AuthorId,
+        Timestamp,
+        Text
+    };
+
     bool createDatabase(const User &user);
     void refreshTable(const User &user);
     bool isValid();

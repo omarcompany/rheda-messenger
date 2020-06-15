@@ -42,9 +42,10 @@ User DatabaseEngine::getUser()
         QSqlQuery query(m_database);
         if (query.exec("SELECT * FROM user")) {
             while (query.next()) {
-                QString currentId = query.value(0).toString();
-                QString currentLogin = query.value(1).toString();
-                return User(currentId, currentLogin);
+                User user;
+                user.id   = query.value(0).toString();
+                user.name = query.value(1).toString();
+                return user;
             }
         }
     }
@@ -79,6 +80,26 @@ bool DatabaseEngine::openDatabase(const User &user)
     return false;
 }
 
+QList<Message> DatabaseEngine::getMessageList()
+{
+    if (m_database.isOpen()) {
+        QSqlQuery query(m_database);
+        if (query.exec("SELECT * FROM messages")) {
+            QList<Message> messageList;
+            while (query.next()) {
+                Message message;
+                message.authorName = query.value(AuthorName).toString();
+                message.authorId   = query.value(AuthorId).toString();
+                message.timestamp  = QDateTime::fromString(query.value(Timestamp).toString(), Qt::ISODate);
+                message.text       = query.value(Text).toString();
+                messageList << message;
+            }
+            return messageList;
+        }
+    }
+    return QList<Message>();
+}
+
 void DatabaseEngine::refreshTable(const User &user)
 {
     if (m_database.isOpen()) {
@@ -101,6 +122,8 @@ void DatabaseEngine::refreshTable(const QList<Message> messageList)
         if (query.exec()) {
             for (auto message : messageList) {
                 if (!message.isValid()) {
+                    //To Solve the problem with incomplete filling of the table
+                    //To do
                     continue;
                 }
                 query.prepare("INSERT INTO Messages(authorName, authorId, timestamp, text) "
@@ -113,8 +136,10 @@ void DatabaseEngine::refreshTable(const QList<Message> messageList)
                     qDebug() << "The database was not filled";
                 }
             }
+            emit dataChanged();
+        } else {
+            qDebug() << "The database was not cleaned";
         }
-        qDebug() << "The database was not cleaned";
     }
 }
 
