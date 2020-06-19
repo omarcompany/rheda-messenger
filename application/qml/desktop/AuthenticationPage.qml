@@ -26,10 +26,10 @@ Item {
 
     Connections {
         target: Messenger
-        onSignUpComplete: {
+        function onSignUpComplete() {
             mainPageLoader.source = "qrc:/HomePage.qml"
         }
-        onError: {
+        function onError(errorType) {
             errorState = true
 
             switch (errorType) {
