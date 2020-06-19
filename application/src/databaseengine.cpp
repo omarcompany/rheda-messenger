@@ -7,6 +7,8 @@
 #include <QSql>
 #include <QSqlQuery>
 
+#include "message.h"
+
 static const QString DATABASE_LOCATION = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
         "/Database";
 
@@ -21,11 +23,17 @@ bool DatabaseEngine::createDatabase(const User &user)
     way.mkpath(DATABASE_LOCATION);
     m_database.setDatabaseName(DATABASE_LOCATION + "/" + user.id + ".db");
     m_database.open();
-    if (!initTableUser(user)) {
-        qDebug() << "Data are not entered";
-        return false;
+    QSqlQuery query(m_database);
+    QString userTable    = "CREATE TABLE IF NOT EXISTS User(id TEXT, name TEXT)";
+    QString messageTable = "CREATE TABLE IF NOT EXISTS Messages"
+                           "(authorName TEXT, authorId TEXT, timestamp TEXT, text TEXT)";
+    if (query.exec(userTable) && query.exec(messageTable)) {
+        refreshTable(user);
+        return true;
     }
-    return true;
+    m_database.close();
+    qDebug() << "Data are not entered";
+    return false;
 }
 
 User DatabaseEngine::getUser()
@@ -71,6 +79,45 @@ bool DatabaseEngine::openDatabase(const User &user)
     return false;
 }
 
+void DatabaseEngine::refreshTable(const User &user)
+{
+    if (m_database.isOpen()) {
+        QSqlQuery query(m_database);
+        query.prepare("INSERT INTO User(id, name) "
+                      "VALUES(?, ?);");
+        query.addBindValue(user.id);
+        query.addBindValue(user.name);
+        if (!query.exec()) {
+            qDebug() << "The database was not filled";
+        }
+    }
+}
+
+void DatabaseEngine::refreshTable(const QList<Message> messageList)
+{
+    if (m_database.isOpen()) {
+        QSqlQuery query(m_database);
+        query.prepare("DELETE FROM Messages");
+        if (query.exec()) {
+            for (auto message : messageList) {
+                if (!message.isValid()) {
+                    continue;
+                }
+                query.prepare("INSERT INTO Messages(authorName, authorId, timestamp, text) "
+                              "VALUES(?, ?, ?, ?);");
+                query.addBindValue(message.authorName);
+                query.addBindValue(message.authorId);
+                query.addBindValue(message.timestamp);
+                query.addBindValue(message.text);
+                if (!query.exec()) {
+                    qDebug() << "The database was not filled";
+                }
+            }
+        }
+        qDebug() << "The database was not cleaned";
+    }
+}
+
 void DatabaseEngine::closeDatabase()
 {
     if (m_database.isOpen()) {
@@ -78,28 +125,10 @@ void DatabaseEngine::closeDatabase()
     }
 }
 
-bool DatabaseEngine::initTableUser(const User &user)
-{
-    if (m_database.isOpen()) {
-        QSqlQuery query(m_database);
-        QString newTable = "CREATE TABLE IF NOT EXISTS User(id TEXT, name TEXT)";
-        if (query.exec(newTable)) {
-            query.prepare("INSERT INTO User(id, name) "
-                          "VALUES(?, ?);");
-            query.addBindValue(user.id);
-            query.addBindValue(user.name);
-            if (query.exec()) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 bool DatabaseEngine::isValid()
 {
     QStringList tablesList = m_database.tables();
-    if (tablesList.contains("User")) {
+    if (tablesList.contains("User") && tablesList.contains("Messages")) {
         return true;
     }
     return false;

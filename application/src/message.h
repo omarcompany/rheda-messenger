@@ -16,6 +16,13 @@ struct Message
         this->text = text;
     }
 
+    bool isValid() const {
+        if (authorName.isEmpty() || authorId.isEmpty() || timestamp.isNull() || text.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
     QString authorName;
     QString authorId;
     QDateTime timestamp;
