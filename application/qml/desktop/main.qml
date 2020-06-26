@@ -11,6 +11,8 @@ Window {
     minimumWidth: 480
     minimumHeight: 720
 
+    property bool signed: Messenger.userId !== ""
+
     QtObject {
         id: constants
         readonly property string registrationText: qsTr("Create an account to start messanging")
@@ -24,15 +26,8 @@ Window {
         }
     }
 
-      Loader {
-        id: mainPageLoader
+    Loader {
         anchors.fill: parent
-    }
-
-    Component.onCompleted: {
-        if (UUIDManager.exists())
-            mainPageLoader.source = "qrc:/HomePage.qml"
-        else
-            mainPageLoader.source = "qrc:/AuthenticationPage.qml"
+        source: signed ? "qrc:/HomePage.qml" : "qrc:/AuthenticationPage.qml"
     }
 }

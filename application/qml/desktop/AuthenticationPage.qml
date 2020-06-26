@@ -16,20 +16,13 @@ Item {
     }
 
     Loader {
-        id: authenticationLoader
         anchors.centerIn: parent
-    }
-
-    Component.onCompleted: {
-        authenticationLoader.source = "qrc:/RegistrationDialog.qml"
+        source: "qrc:/RegistrationDialog.qml"
     }
 
     Connections {
         target: Messenger
-        function onSignUpComplete() {
-            mainPageLoader.source = "qrc:/HomePage.qml"
-        }
-        function onError(errorType) {
+        onError: {
             errorState = true
 
             switch (errorType) {

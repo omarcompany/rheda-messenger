@@ -21,8 +21,13 @@ Item {
         }
         text: qsTr("Sign out")
         onClicked: {
-            UUIDManager.clear()
-            mainPageLoader.source = "qrc:/AuthenticationPage.qml"
+            Messenger.signOut();
         }
+    }
+
+    FloorBar {
+        height: 15
+        width: parent.width
+        anchors.bottom: parent.bottom
     }
 }
