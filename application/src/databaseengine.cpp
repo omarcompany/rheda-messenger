@@ -52,17 +52,32 @@ User DatabaseEngine::getUser()
     return User();
 }
 
-bool DatabaseEngine::openDatabase(const User &user)
+bool DatabaseEngine::open(const User &user)
 {
     if (!user.isValid()) {
         qDebug() << "The User structure is incomplete";
         return false;
     }
+    if (open(user.id)) {
+        return true;
+    }
+    if (createDatabase(user)) {
+        return true;
+    }
+    return false;
+}
+
+bool DatabaseEngine::open(const QString &userId)
+{
     if (m_database.isOpen()) {
         qDebug() << "The database is open";
         return false;
     }
-    QString databasePath = DATABASE_LOCATION + "/" + user.id + ".db";
+    if (userId.isEmpty()) {
+        qDebug() << "The user id is empty";
+        return false;
+    }
+    QString databasePath = DATABASE_LOCATION + "/" + userId + ".db";
     if (QFile::exists(databasePath)) {
         m_database.setDatabaseName(databasePath);
         if (m_database.isValid()) {
@@ -73,9 +88,6 @@ bool DatabaseEngine::openDatabase(const User &user)
             m_database.close();
         }
         QFile::remove(databasePath);
-    }
-    if (createDatabase(user)) {
-        return true;
     }
     return false;
 }
@@ -143,7 +155,7 @@ void DatabaseEngine::refreshTable(const QList<Message> messageList)
     }
 }
 
-void DatabaseEngine::closeDatabase()
+void DatabaseEngine::close()
 {
     if (m_database.isOpen()) {
         m_database.close();

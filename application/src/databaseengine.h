@@ -13,10 +13,11 @@ class DatabaseEngine : public QObject
 public:
     DatabaseEngine();
     User getUser();
-    bool openDatabase(const User &user);
+    bool open(const User &user);
+    bool open(const QString &userId);
     void refreshTable(const QList<Message>);
     QList<Message> getMessageList();
-    void closeDatabase();
+    void close();
 
 signals:
     void dataChanged();
