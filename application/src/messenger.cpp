@@ -14,6 +14,7 @@ Messenger::Messenger()
     : m_requester{new Requester(this)}
 {
     connect(m_requester, &Requester::replied, this, &Messenger::handleResponse);
+    setUserId(UuidManager::getId());
 }
 
 void Messenger::signUp(const QString &name)
@@ -22,6 +23,26 @@ void Messenger::signUp(const QString &name)
     jsonData["name"] = name;
 
     m_requester->sendRequest(Requester::POST, Requester::SIGN_UP, jsonData);
+}
+
+void Messenger::signOut()
+{
+    UuidManager::clear();
+    setUserId(UuidManager::getId());
+}
+
+QString Messenger::userId() const
+{
+    return m_userId;
+}
+
+void Messenger::setUserId(QString userId)
+{
+    if (m_userId == userId)
+        return;
+
+    m_userId = userId;
+    emit userIdChanged(m_userId);
 }
 
 void Messenger::handleResponse(QNetworkReply *reply)
@@ -45,7 +66,7 @@ void Messenger::handleSignupResponse(QNetworkReply *reply)
     QString id = Serializer::getId(reply->readAll());
     if (!id.isEmpty()) {
         UuidManager::create(id);
-        emit signUpComplete();
+        setUserId(UuidManager::getId());
     }
 }
 

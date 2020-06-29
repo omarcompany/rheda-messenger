@@ -15,5 +15,6 @@
         <file>AuthenticationPage.qml</file>
         <file>icons/svgs/icon-logotype.svg</file>
         <file>icons/svgs/icon-show-password.svg</file>
+        <file>FloorBar.qml</file>
     </qresource>
 </RCC>
