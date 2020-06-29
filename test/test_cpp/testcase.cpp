@@ -1,12 +1,11 @@
 #include "testcase.h"
-#include "databaseengine.h"
-#include "user.h"
 
 #include <QtTest>
 #include <QDebug>
 #include <QDir>
 #include <QVector>
 
+#include "user.h"
 #include "serializer.h"
 #include "message.h"
 #include "uuidmanager.h"
@@ -35,18 +34,17 @@ void TestCase::checkDatabase_test()
     QCOMPARE(vlad.isValid(), false);
     QList<User> userList;
     userList << ivan << emptyUser << dima << vlad;
-    DatabaseEngine database;
     for (auto user : userList) {
-        database.openDatabase(user);
+        m_database.openDatabase(user);
         QString databaseLocation = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
                 "/Database/" + user.id + ".db";
         if (user.isValid()) {
             if (QFile::exists(databaseLocation)) {
-                QCOMPARE(user.name, database.getUser().name);
-                database.closeDatabase();
-                database.openDatabase(user);
-                QCOMPARE(user.name, database.getUser().name);
-                database.closeDatabase();
+                QCOMPARE(user.name, m_database.getUser().name);
+                m_database.closeDatabase();
+                m_database.openDatabase(user);
+                QCOMPARE(user.name, m_database.getUser().name);
+                m_database.closeDatabase();
                 QVERIFY(QFile::remove(databaseLocation));
             } else {
                 QFAIL("File does not exist");
@@ -57,11 +55,10 @@ void TestCase::checkDatabase_test()
     }
 }
 
-void TestCase::databaseEngine_updateMessageList_test()
+void TestCase::databaseEngine_refreshTable_test()
 {
     User user("12345678", "user");
-    DatabaseEngine database;
-    if (database.openDatabase(user)) {
+    if (m_database.openDatabase(user)) {
         Message firstMessage( "ivan", "1234", "2020-06-10", "Hello!"),
                 secondMessage("vova", "5678", "2020-06-11", "Bye!"),
                 thirdMessage( "",     "7946", "2020-06-13", "Goodbye!");
@@ -70,10 +67,16 @@ void TestCase::databaseEngine_updateMessageList_test()
         QCOMPARE(thirdMessage.isValid(), false);
         QList<Message> messageList;
         messageList << firstMessage;
-        database.refreshTable(messageList);
+        m_database.refreshTable(messageList);
+        QCOMPARE(m_database.getMessageList()[0].authorId, firstMessage.authorId);
+        QCOMPARE(m_database.getMessageList()[0].timestamp, firstMessage.timestamp);
         messageList << secondMessage;
-        database.refreshTable(messageList);
-        database.closeDatabase();
+        m_database.refreshTable(messageList);
+        QCOMPARE(m_database.getMessageList()[0].authorId, firstMessage.authorId);
+        QCOMPARE(m_database.getMessageList()[0].timestamp, firstMessage.timestamp);
+        QCOMPARE(m_database.getMessageList()[1].authorId, secondMessage.authorId);
+        QCOMPARE(m_database.getMessageList()[1].timestamp, secondMessage.timestamp);
+        m_database.closeDatabase();
         QVERIFY(QFile::remove(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
                               "/Database/" + user.id + ".db"));
     } else {
