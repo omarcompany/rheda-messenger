@@ -23,6 +23,8 @@ QString Requester::getApi(Requester::ApiType api)
     switch (api) {
     case SIGN_UP:
         return "/api/signup";
+    case SEND_MESSAGE:
+        return "/api/message";
     }
 }
 
