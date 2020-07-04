@@ -35,16 +35,19 @@ void TestCase::checkDatabase_test()
     QList<User> userList;
     userList << ivan << emptyUser << dima << vlad;
     for (auto user : userList) {
-        m_database.openDatabase(user);
+        m_database.open(user);
         QString databaseLocation = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
                 "/Database/" + user.id + ".db";
         if (user.isValid()) {
             if (QFile::exists(databaseLocation)) {
                 QCOMPARE(user.name, m_database.getUser().name);
-                m_database.closeDatabase();
-                m_database.openDatabase(user);
+                m_database.close();
+                m_database.open(user);
                 QCOMPARE(user.name, m_database.getUser().name);
-                m_database.closeDatabase();
+                m_database.close();
+                m_database.open(user.id);
+                QCOMPARE(user.name, m_database.getUser().name);
+                m_database.close();
                 QVERIFY(QFile::remove(databaseLocation));
             } else {
                 QFAIL("File does not exist");
@@ -58,7 +61,7 @@ void TestCase::checkDatabase_test()
 void TestCase::databaseEngine_refreshTable_test()
 {
     User user("12345678", "user");
-    if (m_database.openDatabase(user)) {
+    if (m_database.open(user)) {
         Message firstMessage( "ivan", "1234", "2020-06-10", "Hello!"),
                 secondMessage("vova", "5678", "2020-06-11", "Bye!"),
                 thirdMessage( "",     "7946", "2020-06-13", "Goodbye!");
@@ -76,7 +79,7 @@ void TestCase::databaseEngine_refreshTable_test()
         QCOMPARE(m_database.getMessageList()[0].timestamp, firstMessage.timestamp);
         QCOMPARE(m_database.getMessageList()[1].authorId, secondMessage.authorId);
         QCOMPARE(m_database.getMessageList()[1].timestamp, secondMessage.timestamp);
-        m_database.closeDatabase();
+        m_database.close();
         QVERIFY(QFile::remove(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
                               "/Database/" + user.id + ".db"));
     } else {
