@@ -8,7 +8,12 @@ Item {
 
     Text {
         id: name
-        anchors.centerIn: parent
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            margins: 100
+        }
+
         font.pixelSize: 40
         text: qsTr("Welcome to rheda messenger!")
     }
@@ -29,5 +34,10 @@ Item {
         height: 15
         width: parent.width
         anchors.bottom: parent.bottom
+    }
+
+    NewMessageForm {
+        width: parent.width*0.75
+        anchors.centerIn: parent
     }
 }

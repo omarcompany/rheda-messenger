@@ -16,5 +16,7 @@
         <file>icons/svgs/icon-logotype.svg</file>
         <file>icons/svgs/icon-show-password.svg</file>
         <file>FloorBar.qml</file>
+        <file>NewMessageForm.qml</file>
+        <file>TypingArea.qml</file>
     </qresource>
 </RCC>
