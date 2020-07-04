@@ -1,0 +1,13 @@
+Source: rheda-messenger
+Section: misc
+Priority: optional
+Maintainer: Aleksey Tatarov <alekseytatarv@gmail.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 4.1.2
+Homepage: https://github.com/omarcompany/rheda-messenger
+
+Package: rheda-messenger
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <The simple messenger to send messages>
+ <The simple messenger to send messages and get messages>

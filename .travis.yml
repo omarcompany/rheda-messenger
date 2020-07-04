@@ -11,12 +11,14 @@ install:
   - sudo apt-get install -qq qtdeclarative5-dev build-essential
 
 script:
-  - qmake -v
-  - qmake -r
-  - make
-  - cd test/test_cpp/
-  - ./rheda-test-cpp
-  - export QT_QPA_PLATFORM='offscreen'
-  - cd ../test_qml/
-  - ./rheda-test-qml
+   - chmod +x init_build.sh
+   - ./init_build.sh
+        #  - qmake -v
+        #  - qmake -r
+    #  - make
+    #  - cd test/test_cpp/
+    #  - ./rheda-test-cpp
+    #  - export QT_QPA_PLATFORM='offscreen'
+    #  - cd ../test_qml/
+    #  - ./rheda-test-qml
 

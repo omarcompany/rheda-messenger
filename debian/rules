@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE=1
+#export DH_OPTIONS=-v
+# This is the debhelper compatability version to use.
+
+#export DH_COMPAT=3
+override_dh_auto_configure:
+	qmake application/application.pro	
+%:
+	dh $@
