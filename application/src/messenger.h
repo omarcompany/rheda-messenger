@@ -5,6 +5,8 @@
 
 #include "requester.h"
 
+class DatabaseEngine;
+
 class Messenger : public QObject
 {
     Q_OBJECT
@@ -24,6 +26,7 @@ public:
     Q_INVOKABLE void signUp(const QString &name);
     Q_INVOKABLE void signOut();   
     Q_INVOKABLE void sendMessage(const QString &recipientId, const QString &text);
+    Q_INVOKABLE void requestMessageList(const QString &recipientId) const;
 
     QString userId() const;
 
@@ -36,6 +39,7 @@ private slots:
 
 private:
     void handleSignupResponse(QNetworkReply *reply);
+    void handleRequestMessageListResponse(QNetworkReply *reply);
     Requester::ApiType getApiType(const QUrl &url);
     void handleError(int code);
     void setUserId(QString userId);

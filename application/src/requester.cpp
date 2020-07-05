@@ -25,6 +25,8 @@ QString Requester::getApi(Requester::ApiType api)
         return "/api/signup";
     case SEND_MESSAGE:
         return "/api/message";
+    case REQUEST_MESSAGE_LIST:
+        return "api/messageList";
     }
 }
 

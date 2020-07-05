@@ -6,6 +6,8 @@
 
 #include "uuidmanager.h"
 #include "serializer.h"
+#include "message.h"
+#include "databaseengine.h"
 
 static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
 static const QString API_VERSION{"/api/"};
@@ -14,7 +16,10 @@ Messenger::Messenger()
     : m_requester{new Requester(this)}
 {
     connect(m_requester, &Requester::replied, this, &Messenger::handleResponse);
-    setUserId(UuidManager::getId());
+
+    QString id = UuidManager::getId();
+    if (DatabaseEngine::instance()->open(id))
+        setUserId(id);
 }
 
 void Messenger::signUp(const QString &name)
@@ -55,6 +60,15 @@ void Messenger::sendMessage(const QString &recipientId, const QString &text)
     m_requester->sendRequest(Requester::POST, Requester::SEND_MESSAGE, jsonData);
 }
 
+void Messenger::requestMessageList(const QString &recipientId) const
+{
+    QVariantMap jsonData;
+    jsonData["sender"] = UuidManager::getId();
+    jsonData["recipient"] = recipientId;
+
+    m_requester->sendRequest(Requester::GET, Requester::REQUEST_MESSAGE_LIST, jsonData);
+}
+
 void Messenger::handleResponse(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, [=](){
@@ -66,6 +80,9 @@ void Messenger::handleResponse(QNetworkReply *reply)
             case Requester::SEND_MESSAGE:
                 qDebug() << "Response from server: message saved ";
                 break;
+            case Requester::REQUEST_MESSAGE_LIST:
+                handleRequestMessageListResponse(reply);
+                break;
             }
         } else {
             handleError(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
@@ -76,11 +93,18 @@ void Messenger::handleResponse(QNetworkReply *reply)
 
 void Messenger::handleSignupResponse(QNetworkReply *reply)
 {
-    QString id = Serializer::getId(reply->readAll());
-    if (!id.isEmpty()) {
-        UuidManager::create(id);
-        setUserId(UuidManager::getId());
+    User user = Serializer::deserializeToUser(reply->readAll());
+    if (user.isValid()) {
+        UuidManager::create(user.id);
+        DatabaseEngine::instance()->open(user);
+        setUserId(user.id);
     }
+}
+
+void Messenger::handleRequestMessageListResponse(QNetworkReply *reply)
+{
+    QList<Message> messageList = Serializer::deserializeToMessageList(reply->readAll());
+    DatabaseEngine::instance()->refreshTable(messageList);
 }
 
 Requester::ApiType Messenger::getApiType(const QUrl &url)
@@ -92,6 +116,8 @@ Requester::ApiType Messenger::getApiType(const QUrl &url)
         return Requester::SIGN_UP;
     if (apiUrl == "message")
         return Requester::SEND_MESSAGE;
+    if (apiUrl == "messageList")
+        return Requester::REQUEST_MESSAGE_LIST;
     /*
      * Another api types
      */

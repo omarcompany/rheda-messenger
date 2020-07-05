@@ -18,9 +18,6 @@ private slots:
     void serializer_test();
     void serializer_deserializerToUser_test();
     void test_uuid_manager();
-
-private:
-    DatabaseEngine m_database;
 };
 
 #endif // TESTCASE_H
