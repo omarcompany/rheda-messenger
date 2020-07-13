@@ -9,12 +9,23 @@
 
 #include "message.h"
 
-static const QString DATABASE_LOCATION = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
-        "/Database";
+Q_GLOBAL_STATIC(DatabaseEngine, databaseEngineInstance)
+
+static const QString DATABASE_LOCATION =
+        QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/Database";
 
 DatabaseEngine::DatabaseEngine()
 {
     m_database = QSqlDatabase::addDatabase("QSQLITE");
+}
+
+DatabaseEngine::~DatabaseEngine()
+{
+}
+
+DatabaseEngine *DatabaseEngine::instance()
+{
+    return databaseEngineInstance();
 }
 
 bool DatabaseEngine::createDatabase(const User &user)
@@ -92,7 +103,7 @@ bool DatabaseEngine::open(const QString &userId)
     return false;
 }
 
-QList<Message> DatabaseEngine::getMessageList()
+QList<Message> DatabaseEngine::getMessageList() const
 {
     if (m_database.isOpen()) {
         QSqlQuery query(m_database);

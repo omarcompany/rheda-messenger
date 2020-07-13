@@ -15,6 +15,7 @@ public:
     enum ApiType {
         SIGN_UP,
         SEND_MESSAGE,
+        REQUEST_MESSAGE_LIST,
         /*Add here new API*/
     };
 

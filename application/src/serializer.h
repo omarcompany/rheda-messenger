@@ -11,7 +11,6 @@ class Serializer : public QObject
 public:
     Serializer() = delete;
 
-    static QString getId(const QByteArray &jsonData);
     static QList<Message> deserializeToMessageList(const QByteArray &jsonData);
     static User deserializeToUser(const QByteArray &jsonData);
 };
