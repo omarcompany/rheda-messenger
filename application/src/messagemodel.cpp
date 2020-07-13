@@ -1,9 +1,9 @@
 #include "messagemodel.h"
-
+#include "databaseengine.h"
 
 MessageModel::MessageModel(QObject *parent) : QAbstractListModel(parent)
 {
-
+    connectDatabase();
 }
 
 void MessageModel::addMessage(QList<Message> messageList)
@@ -67,4 +67,13 @@ QHash<int, QByteArray> MessageModel::roleNames() const
     roles[Timestamp ] = "timestamp";
 
     return roles;
+}
+
+void MessageModel::connectDatabase()
+{
+    addMessage(DatabaseEngine::instance()->getMessageList());
+    connect(DatabaseEngine::instance(), &DatabaseEngine::dataChanged, [this]() {
+        clear();
+        addMessage(DatabaseEngine::instance()->getMessageList());
+    });
 }

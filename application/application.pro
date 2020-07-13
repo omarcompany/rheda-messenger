@@ -12,6 +12,7 @@ SOURCES += \
       src/databaseengine.cpp \
       src/main.cpp \
       src/messagemodel.cpp \
+      src/modelprovider.cpp \
       src/requester.cpp \
       src/uuidmanager.cpp \
       src/messenger.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
       src/databaseengine.h \
       src/message.h \
       src/messagemodel.h \
+      src/modelprovider.h \
       src/requester.h \
       src/messenger.h \
       src/serializer.h \

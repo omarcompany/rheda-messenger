@@ -1,5 +1,6 @@
 os: linux
 language: C++
+dist: xenial
 
 install:
   - sudo apt install gcc
@@ -10,6 +11,12 @@ install:
   - source /opt/qt514/bin/qt514-env.sh
   - sudo apt-get install -qq qtdeclarative5-dev build-essential
 
+services:
+  - xvfb
+
+before_script:
+  - "export DISPLAY=:99.0"
+
 script:
   - qmake -v
   - qmake -r
@@ -17,6 +24,7 @@ script:
   - cd test/test_cpp/
   - ./rheda-test-cpp
   - export QT_QPA_PLATFORM='offscreen'
-  - cd ../test_qml/
-  - ./rheda-test-qml
-
+  - cd ../test_qml/test_message_model/
+  - ./test-message-model
+  - cd ../test_model_provider/
+  - ./test-model-provider
