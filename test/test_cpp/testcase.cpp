@@ -9,6 +9,7 @@
 #include "serializer.h"
 #include "message.h"
 #include "uuidmanager.h"
+#include "messagemodel.h"
 
 static const QString TEST_MESSAGE_FILE_PATH = QString(PRO_FILE_PWD) + "/test_messages.json";
 static const QString TEST_USER_FILE_PATH = QString(PRO_FILE_PWD) + "/test_user.json";
