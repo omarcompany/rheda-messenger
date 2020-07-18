@@ -12,7 +12,21 @@ void MessageModel::addMessage(QList<Message> messageList)
     for (auto message : messageList) {
         m_messageList.append(message);
     }
+    emit countChanged();
     endResetModel();
+}
+
+void MessageModel::clear()
+{
+    beginResetModel();
+    m_messageList.clear();
+    emit countChanged();
+    endResetModel();
+}
+
+int MessageModel::count() const
+{
+    return m_messageList.count();
 }
 
 int MessageModel::rowCount(const QModelIndex &parent) const

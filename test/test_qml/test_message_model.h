@@ -11,12 +11,15 @@ class TestMessageModel : public QObject
     Q_OBJECT
 public:
     TestMessageModel();
+    Q_INVOKABLE void clear();
 
 public slots:
     void qmlEngineAvailable(QQmlEngine *engine);
 
 private:
     MessageModel m_messageModel;
+    MessageModel m_cleanMessageModel;
+    QList<Message> m_testMessageList;
 };
 
 #endif // TESTMESSAGEMODEL_H

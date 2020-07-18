@@ -7,10 +7,16 @@
 class MessageModel: public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 public:
     MessageModel(QObject *parent = nullptr);
 
     void addMessage(QList<Message> messageList);
+    void clear();
+    int count() const;
+
+signals:
+    void countChanged();
 
 private:
     enum Roles {
@@ -24,7 +30,6 @@ private:
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const;
 
-private:
     QList<Message> m_messageList;
 };
 
