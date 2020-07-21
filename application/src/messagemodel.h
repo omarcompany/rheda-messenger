@@ -31,6 +31,8 @@ private:
     QHash<int, QByteArray> roleNames() const;
 
     QList<Message> m_messageList;
+
+    void connectDatabase();
 };
 
 #endif // MESSAGEMODEL_H
