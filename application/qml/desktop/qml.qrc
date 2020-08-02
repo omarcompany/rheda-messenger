@@ -18,5 +18,7 @@
         <file>FloorBar.qml</file>
         <file>NewMessageForm.qml</file>
         <file>TypingArea.qml</file>
+        <file>MessageList.qml</file>
+        <file>MessageDelegate.qml</file>
     </qresource>
 </RCC>

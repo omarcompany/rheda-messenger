@@ -31,13 +31,31 @@ Item {
     }
 
     FloorBar {
+        id: floorBar
         height: 15
         width: parent.width
         anchors.bottom: parent.bottom
     }
 
     NewMessageForm {
+        id: messageForm
         width: parent.width*0.75
-        anchors.centerIn: parent
+        anchors {
+            bottom: floorBar.top
+            bottomMargin: 20
+            leftMargin: 50
+        }
+    }
+
+    MessageList {
+        anchors {
+            top: name.bottom
+            topMargin: 50
+            bottom: messageForm.top
+//            bottomMargin: 20
+            left: parent.left
+            right: parent.right
+            margins: 20
+        }
     }
 }
