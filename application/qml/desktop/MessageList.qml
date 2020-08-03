@@ -1,13 +1,14 @@
 import QtQuick 2.0
-import elevons.team 1.0
 
 ListView {
-    id: view
-    model: ModelProvider.messageList
+
     spacing: 10
+    clip: true
 
     delegate: MessageDelegate {
-        user_name: model.name
+        width: Math.min(ListView.view.width, 400)
+
+        userName: model.name
         timestamp: model.timestamp
         text: model.text
     }

@@ -3,13 +3,10 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.12
 
 Control {
-    id: message
 
-    property string user_name
-    property string timestamp
-    property string text
-
-    width: Math.min(parent.width, 400)
+    property alias userName: nameText.text
+    property alias timestamp: timeText.text
+    property alias text: messageText.text
 
     padding: 10
 
@@ -21,22 +18,21 @@ Control {
     }
 
     contentItem: GridLayout {
-        id: grid
         width: parent.width
         columns: 3
         rows: 2
         Text {
-            text: message.user_name
+            id: nameText
         }
         Item {
             Layout.fillWidth: true
         }
         Text {
-            text: message.timestamp
+            id: timeText
         }
 
         Text {
-            text: message.text
+            id: messageText
             Layout.columnSpan: 3
         }
     }
