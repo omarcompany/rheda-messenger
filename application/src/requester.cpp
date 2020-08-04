@@ -59,25 +59,35 @@ QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
 
 void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData)
 {
+    QNetworkRequest request = createRequest(api);
+    QNetworkReply *reply;
     switch (type) {
     case POST: {
-        QNetworkRequest request = createRequest(api);
         QJsonObject obj = QJsonObject::fromVariantMap(jsonData);
         QJsonDocument doc(obj);
         QByteArray postDataByteArray = doc.toJson();
-
-        QNetworkReply *reply;
         reply = m_manager->post(request, postDataByteArray);
-        connect(reply, &QNetworkReply::finished, [=](){
-            if (reply->error() == QNetworkReply::NoError)
-                emit replied(urlToApi(reply->url()), reply->readAll());
-            else
-                emit error(reply->error());
-        });
+        break;
+    }
+    case GET: {
+        QUrlQuery params;
+        for (auto itr = jsonData.begin(); itr != jsonData.end(); ++itr)
+            params.addQueryItem(itr.key(), itr->toString());
+        auto url = request.url();
+        url.setQuery(params);
+        request.setUrl(url);
+        reply = m_manager->get(request);
         break;
     }
     default:
         return;
     }
+
+    connect(reply, &QNetworkReply::finished, [=](){
+        if (reply->error() == QNetworkReply::NoError)
+            emit replied(urlToApi(reply->url()), reply->readAll());
+        else
+            emit error(reply->error());
+    });
 }
 
