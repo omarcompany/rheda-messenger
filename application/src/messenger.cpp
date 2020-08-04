@@ -9,13 +9,13 @@
 #include "message.h"
 #include "databaseengine.h"
 
-static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
-static const QString API_VERSION{"/api/"};
-
 Messenger::Messenger()
     : m_requester{new Requester(this)}
 {
     connect(m_requester, &Requester::replied, this, &Messenger::handleResponse);
+    connect(m_requester, &Requester::error, this, [this](int code) {
+        emit error(fromErrorCode(code));
+    });
 
     QString id = UuidManager::getId();
     if (DatabaseEngine::instance()->open(id))
@@ -69,31 +69,24 @@ void Messenger::requestMessageList(const QString &recipientId) const
     m_requester->sendRequest(Requester::GET, Requester::REQUEST_MESSAGE_LIST, jsonData);
 }
 
-void Messenger::handleResponse(QNetworkReply *reply)
+void Messenger::handleResponse(Requester::ApiType api, const QByteArray &data)
 {
-    connect(reply, &QNetworkReply::finished, [=](){
-        if (reply->error() == QNetworkReply::NoError) {
-            switch (getApiType(reply->url())) {
-            case Requester::SIGN_UP:
-                handleSignupResponse(reply);
-                break;
-            case Requester::SEND_MESSAGE:
-                qDebug() << "Response from server: message saved ";
-                break;
-            case Requester::REQUEST_MESSAGE_LIST:
-                handleRequestMessageListResponse(reply);
-                break;
-            }
-        } else {
-            handleError(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
-        }
-        reply->deleteLater();
-    });
+    switch (api) {
+    case Requester::SIGN_UP:
+        handleSignupResponse(data);
+        break;
+    case Requester::SEND_MESSAGE:
+        qDebug() << "Response from server: message saved ";
+        break;
+    case Requester::REQUEST_MESSAGE_LIST:
+        handleRequestMessageListResponse(data);
+        break;
+    }
 }
 
-void Messenger::handleSignupResponse(QNetworkReply *reply)
+void Messenger::handleSignupResponse(const QByteArray &data)
 {
-    User user = Serializer::deserializeToUser(reply->readAll());
+    User user = Serializer::deserializeToUser(data);
     if (user.isValid()) {
         UuidManager::create(user.id);
         DatabaseEngine::instance()->open(user);
@@ -101,39 +94,22 @@ void Messenger::handleSignupResponse(QNetworkReply *reply)
     }
 }
 
-void Messenger::handleRequestMessageListResponse(QNetworkReply *reply)
+void Messenger::handleRequestMessageListResponse(const QByteArray &data)
 {
-    QList<Message> messageList = Serializer::deserializeToMessageList(reply->readAll());
+    QList<Message> messageList = Serializer::deserializeToMessageList(data);
     DatabaseEngine::instance()->refreshTable(messageList);
 }
 
-Requester::ApiType Messenger::getApiType(const QUrl &url)
-{
-    QString apiUrl = url.toString();
-    apiUrl.replace(RHEDA_DOMAIN + API_VERSION, "");
-
-    if (apiUrl == "signup")
-        return Requester::SIGN_UP;
-    if (apiUrl == "message")
-        return Requester::SEND_MESSAGE;
-    if (apiUrl == "messageList")
-        return Requester::REQUEST_MESSAGE_LIST;
-    /*
-     * Another api types
-     */
-}
-
-void Messenger::handleError(int code)
+Messenger::MessengerError Messenger::fromErrorCode(int code)
 {
     switch (code) {
     case 0:
-        emit error(MessengerError::NoNetWorkConnect);
-        break;
+        return MessengerError::NoNetworkConnect;
     case 404:
-        emit error(MessengerError::NotFound);
-        break;
+        return MessengerError::NotFound;
     case 503:
-        emit error(MessengerError::ServerNotAvailable);
-        break;
+        return MessengerError::ServerNotAvailable;
+    default:
+        return MessengerError::OtherError;
     }
 }

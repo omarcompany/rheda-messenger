@@ -15,13 +15,6 @@ class Messenger : public QObject
 public:
     explicit Messenger();
 
-    enum MessengerError {
-        NoNetWorkConnect,
-        NotFound,
-        ServerNotAvailable,
-    };
-    Q_ENUM(MessengerError)
-
     // public API
     Q_INVOKABLE void signUp(const QString &name);
     Q_INVOKABLE void signOut();   
@@ -30,18 +23,25 @@ public:
 
     QString userId() const;
 
+    enum MessengerError {
+        OtherError,
+        NoNetworkConnect,
+        NotFound,
+        ServerNotAvailable,
+    };
+    Q_ENUM(MessengerError)
+
 signals:
     void error(MessengerError errorType);
     void userIdChanged(QString userId);
 
 private slots:
-    void handleResponse(QNetworkReply *reply); // Общий для всех ответов
+    void handleResponse(Requester::ApiType api, const QByteArray &data); // Общий для всех ответов
 
 private:
-    void handleSignupResponse(QNetworkReply *reply);
-    void handleRequestMessageListResponse(QNetworkReply *reply);
-    Requester::ApiType getApiType(const QUrl &url);
-    void handleError(int code);
+    void handleSignupResponse(const QByteArray &data);
+    void handleRequestMessageListResponse(const QByteArray &data);
+    MessengerError fromErrorCode(int code);
     void setUserId(QString userId);
 
     Requester *m_requester;

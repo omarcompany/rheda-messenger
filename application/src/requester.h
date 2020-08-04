@@ -25,17 +25,26 @@ public:
         PUT,
         DELETE
     };
+    enum MessengerError {
+        OtherError,
+        NoNetworkConnect,
+        NotFound,
+        ServerNotAvailable,
+    };
+    Q_ENUM(MessengerError)
 
     explicit Requester(QObject *parent = nullptr);
 
     void sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData);
 
 signals:
-    void replied(QNetworkReply *reply);
+    void replied(ApiType api, const QByteArray &data);
+    void error(int errorCode);
 
 private:
     QNetworkRequest createRequest(const Requester::ApiType &api);
-    QString getApi(Requester::ApiType api);
+    QString apiToString(Requester::ApiType api);
+    Requester::ApiType urlToApi(const QUrl &url);
 
     QNetworkAccessManager *m_manager;
 };
