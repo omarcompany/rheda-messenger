@@ -7,6 +7,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QUrlQuery>
 
 #include "uuidmanager.h"
 #include "serializer.h"
@@ -26,7 +27,7 @@ QString Requester::getApi(Requester::ApiType api)
     case SEND_MESSAGE:
         return "/api/message";
     case REQUEST_MESSAGE_LIST:
-        return "api/messageList";
+        return "/api/messageList";
     }
 }
 
@@ -42,15 +43,28 @@ QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
 
 void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData)
 {
+    QNetworkRequest request = createRequest(api);
+    QNetworkReply *reply;
     switch (type) {
-    case POST:
-        QNetworkRequest request = createRequest(api);
+    case POST: {
         QJsonObject obj = QJsonObject::fromVariantMap(jsonData);
         QJsonDocument doc(obj);
         QByteArray postDataByteArray = doc.toJson();
-
-        QNetworkReply *reply;
         reply = m_manager->post(request, postDataByteArray);
-        emit replied(reply);
+        break;
     }
+    case GET: {
+        QUrlQuery params;
+        for (auto itr = jsonData.begin(); itr != jsonData.end(); ++itr)
+            params.addQueryItem(itr.key(), itr->toString());
+        auto url = request.url();
+        url.setQuery(params);
+        request.setUrl(url);
+        reply = m_manager->get(request);
+        break;
+    }
+    default:
+        return;
+    }
+    emit replied(reply);
 }
