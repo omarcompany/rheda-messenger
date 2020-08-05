@@ -18,14 +18,6 @@ Window {
         readonly property string registrationText: qsTr("Create an account to start messanging")
     }
 
-    Logotype {
-        anchors {
-            left: parent.left
-            top: parent.top
-            margins: 50
-        }
-    }
-
     Loader {
         anchors.fill: parent
         source: signed ? "qrc:/HomePage.qml" : "qrc:/AuthenticationPage.qml"

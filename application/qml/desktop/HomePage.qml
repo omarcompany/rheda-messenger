@@ -1,43 +1,44 @@
 import QtQuick 2.0
-import elevons.team 1.0
 import QtQuick.Controls 2.0
+import elevons.team 1.0
 
-Item {
+Page {
     width: parent.width
     height: parent.height
 
-    Text {
-        id: name
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: parent.top
-            margins: 100
-        }
-
+    header: Label {
+        padding: 20
+        horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 40
         text: qsTr("Welcome to rheda messenger!")
-    }
 
-    Button {
-        anchors {
-            right: parent.right
-            top: parent.top
-            margins: 50
+        Button {
+            anchors {
+                right: parent.right
+                rightMargin: 50
+                verticalCenter: parent.verticalCenter
+            }
+            text: qsTr("Sign out")
+            onClicked: {
+                Messenger.signOut();
+            }
         }
-        text: qsTr("Sign out")
-        onClicked: {
-            Messenger.signOut();
+    }
+
+    padding: 10
+    contentItem: MessageList {
+        model: ModelProvider.messageList
+    }
+
+    footer: Control {
+        padding: 10
+        contentItem: Column {
+            spacing: 10
+            NewMessageForm {
+                width: parent.width*0.75
+            }
+
+            FloorBar {}
         }
-    }
-
-    FloorBar {
-        height: 15
-        width: parent.width
-        anchors.bottom: parent.bottom
-    }
-
-    NewMessageForm {
-        width: parent.width*0.75
-        anchors.centerIn: parent
     }
 }

@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "Messenger", singleton_factory<Messenger>);
-    qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "ModelProvider", singleton_factory<ModelProvider>);
+    qmlRegisterSingletonType<ModelProvider>("elevons.team", 1, 0, "ModelProvider", singleton_factory<ModelProvider>);
+    qmlRegisterType<MessageModel>("elevons.team", 1, 0, "MessageModel");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
