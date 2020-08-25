@@ -109,8 +109,8 @@ void Messenger::handleRequestMessageListResponse(QNetworkReply *reply)
 
 Requester::ApiType Messenger::getApiType(const QUrl &url)
 {
-    QString apiUrl = url.toString();
-    apiUrl.replace(RHEDA_DOMAIN + API_VERSION, "");
+    QString apiUrl = url.path();
+    apiUrl = apiUrl.split("/").last();
 
     if (apiUrl == "signup")
         return Requester::SIGN_UP;

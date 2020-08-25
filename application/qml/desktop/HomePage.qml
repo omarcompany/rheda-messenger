@@ -29,6 +29,7 @@ Page {
     contentItem: MessageList {
         model: ModelProvider.messageList
     }
+    Component.onCompleted: Messenger.requestMessageList (Messenger.userId)
 
     footer: Control {
         padding: 10
