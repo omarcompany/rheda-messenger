@@ -14,17 +14,16 @@
 
 QList<Message> Serializer::deserializeToMessageList(const QByteArray &jsonData)
 {
-    QJsonArray jsonArray = QJsonDocument::fromJson(jsonData).object().value("messages").toArray();
+    QJsonArray jsonArray = QJsonDocument::fromJson(jsonData).array();
 
     QList<Message> messageList;
     for (auto jsonMessage : jsonArray) {
         Message message;
 
-        message.authorName = jsonMessage.toObject().value("authorName").toString();
-        message.authorId   = jsonMessage.toObject().value("authorId").toString();
+        message.authorId   = jsonMessage.toObject().value("sender").toString();
         message.text       = jsonMessage.toObject().value("text").toString();
 
-        QString dateTime   = jsonMessage.toObject().value("timestamp").toString();
+        QString dateTime   = jsonMessage.toObject().value("created_at").toString();
         message.timestamp  = QDateTime::fromString(dateTime, Qt::ISODate);
 
         messageList.append(message);

@@ -17,7 +17,7 @@ struct Message
     }
 
     bool isValid() const {
-        if (authorName.isEmpty() || authorId.isEmpty() || timestamp.isNull() || text.isEmpty()) {
+        if (authorId.isEmpty() || timestamp.isNull() || text.isEmpty()) {
             return false;
         }
         return true;

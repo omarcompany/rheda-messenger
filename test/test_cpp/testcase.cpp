@@ -64,8 +64,8 @@ void TestCase::databaseEngine_refreshTable_test()
     User user("12345678", "user");
     if (DatabaseEngine::instance()->open(user)) {
         Message firstMessage( "ivan", "1234", "2020-06-10", "Hello!"),
-                secondMessage("vova", "5678", "2020-06-11", "Bye!"),
-                thirdMessage( "",     "7946", "2020-06-13", "Goodbye!");
+                secondMessage("", "5678", "2020-06-11", "Bye!"),
+                thirdMessage( "",     "7946", "2020-06-13", "");
         QCOMPARE(firstMessage.isValid(), true);
         QCOMPARE(secondMessage.isValid(), true);
         QCOMPARE(thirdMessage.isValid(), false);
