@@ -17,7 +17,7 @@ QList<Message> Serializer::deserializeToMessageList(const QByteArray &jsonData)
     QJsonArray jsonArray = QJsonDocument::fromJson(jsonData).array();
 
     QList<Message> messageList;
-    for (auto jsonMessage : jsonArray) {
+    for (const auto &jsonMessage : jsonArray) {
         Message message;
 
         message.authorId   = jsonMessage.toObject().value("sender").toString();
@@ -39,4 +39,21 @@ User Serializer::deserializeToUser(const QByteArray &jsonData)
     user.id = jsonObj["id"].toString();
     user.name = jsonObj["name"].toString();
     return user;
+}
+
+QList<User> Serializer::deserializeToUserList(const QByteArray &jsonData)
+{
+    QJsonArray jsonArray = QJsonDocument::fromJson(jsonData).array();
+
+    QList<User> userList;
+    for (const auto &jsonUser : jsonArray) {
+        User user;
+
+        user.id   = jsonUser.toObject().value("id").toString();
+        user.name = jsonUser.toObject().value("name").toString();
+
+        userList.append(user);
+    }
+
+    return userList;
 }

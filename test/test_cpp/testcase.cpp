@@ -13,6 +13,7 @@
 
 static const QString TEST_MESSAGE_FILE_PATH = QString(PRO_FILE_PWD) + "/test_messages.json";
 static const QString TEST_USER_FILE_PATH = QString(PRO_FILE_PWD) + "/test_user.json";
+static const QString TEST_USER_LIST_FILE = QString(PRO_FILE_PWD) + "/test_user_list.json";
 
 TestCase::TestCase()
 {
@@ -148,6 +149,31 @@ void TestCase::test_uuid_manager()
     QCOMPARE(UuidManager::getId(), QString());
     QCOMPARE(uuid.exists(), false);
     uuid.clear();
+}
+
+void TestCase::deserializeUserList_test()
+{
+    QFile testFile(TEST_MESSAGE_FILE_PATH);
+
+    if (testFile.open(QIODevice::ReadOnly)) {
+        QList<User> testUserList;
+        testUserList.append(User("8723536", "Andrukha"));
+        testUserList.append(User("8721364", "Dukalis"));
+        testUserList.append(User("1278540", "Joposranchik"));
+
+        QByteArray test_jsonData = testFile.readAll();
+        QList<User> userList = Serializer::deserializeToUserList(test_jsonData);
+
+        int iter = 0;
+        for (auto user : userList) {
+            QCOMPARE(user.id, testUserList[iter].id);
+            QCOMPARE(user.name,testUserList[iter].name);
+
+            iter++;
+        }
+    } else {
+        QFAIL("Error reading file!");
+    }
 }
 
 QTEST_APPLESS_MAIN(TestCase)

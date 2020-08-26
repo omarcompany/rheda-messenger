@@ -13,6 +13,7 @@ public:
 
     static QList<Message> deserializeToMessageList(const QByteArray &jsonData);
     static User deserializeToUser(const QByteArray &jsonData);
+    static QList<User> deserializeToUserList(const QByteArray &jsonData);
 };
 
 #endif // SERIALIZER_H
