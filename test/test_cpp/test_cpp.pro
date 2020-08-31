@@ -27,4 +27,5 @@ DEFINES += PRO_FILE_PWD=$$sprintf("\"\\\"%1\\\"\"", $$_PRO_FILE_PWD_)
 
 DISTFILES += \
 	test_messages.json \
-	test_user.json
+	test_user.json \
+	test_user_list.json

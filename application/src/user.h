@@ -5,7 +5,11 @@
 
 struct User {
     User() = default;
-    User(QString userId, QString userName) : id(userId), name(userName) {}
+    User(const QString &id, const QString &name)
+    {
+        this->id = id;
+        this->name = name;
+    }
 
     bool isValid() const {
         if (id.isEmpty() || name.isEmpty())
