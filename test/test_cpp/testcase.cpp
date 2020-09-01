@@ -176,4 +176,28 @@ void TestCase::deserializeUserList_test()
     }
 }
 
+void TestCase::getUserList_test()
+{
+    User user("12345678", "user");
+    if (DatabaseEngine::instance()->open(user)) {
+        User andrukha("8723536", "Andrukha");
+        User dukalis("8721364", "Dukalis");
+        User joposranchik("1278540", "Joposranchik");
+
+        QList<User> temp_userList;
+        temp_userList.append(andrukha);
+        temp_userList.append(dukalis);
+        temp_userList.append(joposranchik);
+
+        DatabaseEngine::instance()->refreshTable(temp_userList);
+
+        QList<User> test_userList = DatabaseEngine::instance()->getUserList();
+
+        for(int i = 0; i < test_userList.length(); i++) {
+            QCOMPARE(test_userList[i].id,   temp_userList[i].id);
+            QCOMPARE(test_userList[i].name, temp_userList[i].name);
+        }
+    }
+}
+
 QTEST_APPLESS_MAIN(TestCase)

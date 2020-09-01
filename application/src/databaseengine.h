@@ -17,9 +17,11 @@ public:
     static DatabaseEngine *instance();
 
     User getUser();
+    QList<User> getUserList();
     bool open(const User &user);
     bool open(const QString &userId);
     void refreshTable(const QList<Message>);
+    void refreshTable(const QList<User> &userList);
     QList<Message> getMessageList() const;
     void close();
 
@@ -27,11 +29,16 @@ signals:
     void dataChanged();
 
 private:
-    enum MessagePart {
+    enum class MessagePart {
         AuthorName,
         AuthorId,
         Timestamp,
-        Text
+        Text,
+    };
+
+    enum class UserPart {
+        Id,
+        Name,
     };
 
     bool createDatabase(const User &user);

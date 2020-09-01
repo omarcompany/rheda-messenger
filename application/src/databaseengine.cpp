@@ -63,6 +63,24 @@ User DatabaseEngine::getUser()
     return User();
 }
 
+QList<User> DatabaseEngine::getUserList()
+{
+    if (m_database.isOpen()) {
+        QSqlQuery query(m_database);
+        if (query.exec("SELECT * FROM User")) {
+            QList<User> userList;
+            while (query.next()) {
+                User user;
+                user.id = query.value(int(UserPart::Id)).toString();
+                user.name   = query.value(int(UserPart::Name)).toString();
+                userList << user;
+            }
+            return userList;
+        }
+    }
+    return QList<User>();
+}
+
 bool DatabaseEngine::open(const User &user)
 {
     if (!user.isValid()) {
@@ -111,10 +129,10 @@ QList<Message> DatabaseEngine::getMessageList() const
             QList<Message> messageList;
             while (query.next()) {
                 Message message;
-                message.authorName = query.value(AuthorName).toString();
-                message.authorId   = query.value(AuthorId).toString();
-                message.timestamp  = QDateTime::fromString(query.value(Timestamp).toString(), Qt::ISODate);
-                message.text       = query.value(Text).toString();
+                message.authorName = query.value(int(MessagePart::AuthorName)).toString();
+                message.authorId   = query.value(int(MessagePart::AuthorId)).toString();
+                message.timestamp  = QDateTime::fromString(query.value(int(MessagePart::Timestamp)).toString(), Qt::ISODate);
+                message.text       = query.value(int(MessagePart::Text)).toString();
                 messageList << message;
             }
             return messageList;
@@ -158,6 +176,29 @@ void DatabaseEngine::refreshTable(const QList<Message> messageList)
                 if (!query.exec()) {
                     qDebug() << "The database was not filled";
                 }
+            }
+            emit dataChanged();
+        } else {
+            qDebug() << "The database was not cleaned";
+        }
+    }
+}
+
+void DatabaseEngine::refreshTable(const QList<User> &userList)
+{
+    if (m_database.isOpen()) {
+        QSqlQuery query(m_database);
+        query.prepare("DELETE FROM User");
+        if (query.exec()) {
+            for (auto user : userList) {
+                if (!user.isValid())
+                    continue;
+
+                query.prepare("INSERT INTO User(Id, Name) VALUES(?, ?);");
+                query.addBindValue(user.id);
+                query.addBindValue(user.name);
+                if (!query.exec())
+                    qDebug() << "The database was not filled";
             }
             emit dataChanged();
         } else {
