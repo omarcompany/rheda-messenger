@@ -19,6 +19,7 @@ private slots:
     void serializer_deserializerToUser_test();
     void test_uuid_manager();
     void deserializeUserList_test();
+    void getUserList_test();
 };
 
 #endif // TESTCASE_H
