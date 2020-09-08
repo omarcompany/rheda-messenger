@@ -14,6 +14,7 @@ SOURCES += \
       src/messagemodel.cpp \
       src/modelprovider.cpp \
       src/requester.cpp \
+      src/userlistmodel.cpp \
       src/uuidmanager.cpp \
       src/messenger.cpp \
       src/serializer.cpp
@@ -41,4 +42,5 @@ HEADERS += \
       src/messenger.h \
       src/serializer.h \
       src/user.h \
+      src/userlistmodel.h \
       src/uuidmanager.h

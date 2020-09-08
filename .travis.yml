@@ -28,3 +28,5 @@ script:
   - ./test-message-model
   - cd ../test_model_provider/
   - ./test-model-provider
+  - cd ../test_user_list_model/
+  - ./test-user-list-model
