@@ -3,8 +3,10 @@ import QtQuick.Controls 2.0
 import elevons.team 1.0
 
 Page {
-    width: parent.width
-    height: parent.height
+    id: root
+    anchors.fill: parent
+
+    property int contactBoxWidth: 400
 
     header: Label {
         padding: 20
@@ -26,20 +28,42 @@ Page {
     }
 
     padding: 10
-    contentItem: MessageList {
-        model: ModelProvider.messageList
-    }
-    Component.onCompleted: Messenger.requestMessageList (Messenger.userId)
+    contentHeight: parent.height
+    contentWidth: parent.width
 
-    footer: Control {
-        padding: 10
-        contentItem: Column {
-            spacing: 10
-            NewMessageForm {
-                width: parent.width*0.75
+    contentItem: Row {
+        spacing: 5
+        ContactList {
+            id: contactList
+            width: 400
+            height: parent.height
+        }
+
+        Column {
+            height: parent.height
+            MessageList {
+                height: parent.height - newMessageForm.height
+                width: root.width - contactList.width - 20
             }
 
-            FloorBar {}
+            NewMessageForm {
+                id: newMessageForm
+                width: root.width - contactList.width - 20
+            }
         }
     }
+
+    Component.onCompleted: Messenger.requestMessageList(Messenger.userId)
+
+    //    footer: Control {
+    //        padding: 10
+    //        contentItem: Column {
+    //            spacing: 10
+    //            NewMessageForm {
+    //                width: parent.width * 0.75
+    //            }
+
+    //            FloorBar {}
+    //        }
+    //    }
 }

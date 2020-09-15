@@ -1,15 +1,28 @@
-import QtQuick 2.0
+import QtQuick 2.11
 
-ListView {
+Rectangle {
+    id: root
+    height: 700
+    ListModel {
+        id: messageList
+        dynamicRoles: true
+        Component.onCompleted: {
+            for (var i = 0; i <= 100; i++) {
+                append({})
+            }
+        }
+    }
 
-    spacing: 10
-    clip: true
-
-    delegate: MessageDelegate {
-        width: Math.min(ListView.view.width, 400)
-
-        userName: model.name ? model.name : "ID: " + model.id.slice(0,10)
-        timestamp: model.timestamp
-        text: model.text
+    ListView {
+        verticalLayoutDirection: ListView.BottomToTop
+        anchors.fill: parent
+        spacing: 2
+        model: messageList
+        clip: true
+        delegate: MessageDelegate {
+            userName: "Dukalis Andruha"
+            text: "Сегодня мы познакомимся с Вами еще с одним лингвистическим явлением, которое называется «панграмма». Это греческий термин, который означает «παν» - «все» и «γραμμα» - «буква» и обозначает фразу или предложение, которое содержит все или почти все буквы алфавита того или иного языка. В некоторых языках из-за специфичности алфавита очень сложно составить панграммы с повторением буквы в предложении только один раз, поэтому допустимы отклонения от этого правила: некоторые буквы могут повторяться, используются сокращения, в соответствии с древнеримской традицией буквы J и U заменяются на I и V."
+            timestamp: "22-05-2020 23:12:56"
+        }
     }
 }
