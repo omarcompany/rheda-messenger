@@ -16,6 +16,7 @@ public:
         SIGN_UP,
         SEND_MESSAGE,
         REQUEST_MESSAGE_LIST,
+        REQUEST_USER_LIST,
         /*Add here new API*/
     };
 

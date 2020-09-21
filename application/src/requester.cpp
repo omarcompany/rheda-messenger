@@ -28,6 +28,8 @@ QString Requester::getApi(Requester::ApiType api)
         return "/api/message";
     case REQUEST_MESSAGE_LIST:
         return "/api/messageList";
+    case REQUEST_USER_LIST:
+        return  "/api/accountList";
     }
 }
 
