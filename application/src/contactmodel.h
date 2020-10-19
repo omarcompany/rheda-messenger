@@ -4,14 +4,14 @@
 #include <QAbstractListModel>
 #include "user.h"
 
-class UserListModel: public QAbstractListModel
+class ContactModel: public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 public:
-    UserListModel(QObject *parent = nullptr);
+    ContactModel(QObject *parent = nullptr);
 
-    void setUserlist(const QList<User> &userList);
+    void setUserList(const QList<User> &userList);
     int count() const;
 
 signals:

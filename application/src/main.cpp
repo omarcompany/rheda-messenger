@@ -3,8 +3,9 @@
 
 #include "messenger.h"
 #include "uuidmanager.h"
-#include "messagemodel.h"
 #include "modelprovider.h"
+#include "messagemodel.h"
+#include "contactmodel.h"
 
 template <typename T>
 static QObject *singleton_factory(QQmlEngine *, QJSEngine *)
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<Messenger>("elevons.team", 1, 0, "Messenger", singleton_factory<Messenger>);
     qmlRegisterSingletonType<ModelProvider>("elevons.team", 1, 0, "ModelProvider", singleton_factory<ModelProvider>);
     qmlRegisterType<MessageModel>("elevons.team", 1, 0, "MessageModel");
+    qmlRegisterType<ContactModel>("elevons.team", 1, 0, "ContactModel");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

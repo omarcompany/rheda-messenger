@@ -10,7 +10,8 @@
 #include "user.h"
 #include "databaseengine.h"
 
-static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
+static const QString RHEDA_DOMAIN{"http://142.93.49.33:8000"};
+//static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
 static const QString API_VERSION{"/api/"};
 
 Messenger::Messenger()
