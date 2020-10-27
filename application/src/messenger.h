@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE void signOut();   
     Q_INVOKABLE void sendMessage(const QString &recipientId, const QString &text);
     Q_INVOKABLE void requestMessageList(const QString &recipientId) const;
+    Q_INVOKABLE void requestUserList();
 
     QString userId() const;
 
@@ -40,6 +41,7 @@ private slots:
 private:
     void handleSignupResponse(QNetworkReply *reply);
     void handleRequestMessageListResponse(QNetworkReply *reply);
+    void handleRequestUserListResponse(QNetworkReply *reply);
     Requester::ApiType getApiType(const QUrl &url);
     void handleError(int code);
     void setUserId(QString userId);

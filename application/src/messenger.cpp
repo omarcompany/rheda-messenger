@@ -7,6 +7,7 @@
 #include "uuidmanager.h"
 #include "serializer.h"
 #include "message.h"
+#include "user.h"
 #include "databaseengine.h"
 
 static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
@@ -69,6 +70,11 @@ void Messenger::requestMessageList(const QString &recipientId) const
     m_requester->sendRequest(Requester::GET, Requester::REQUEST_MESSAGE_LIST, jsonData);
 }
 
+void Messenger::requestUserList()
+{
+    m_requester->sendRequest(Requester::GET, Requester::REQUEST_USER_LIST, QVariantMap());
+}
+
 void Messenger::handleResponse(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, [=](){
@@ -82,6 +88,9 @@ void Messenger::handleResponse(QNetworkReply *reply)
                 break;
             case Requester::REQUEST_MESSAGE_LIST:
                 handleRequestMessageListResponse(reply);
+                break;
+            case Requester::REQUEST_USER_LIST:
+                handleRequestUserListResponse(reply);
                 break;
             }
         } else {
@@ -107,6 +116,12 @@ void Messenger::handleRequestMessageListResponse(QNetworkReply *reply)
     DatabaseEngine::instance()->refreshTable(messageList);
 }
 
+void Messenger::handleRequestUserListResponse(QNetworkReply *reply)
+{
+    QList<User> userList = Serializer::deserializeToUserList(reply->readAll());
+    DatabaseEngine::instance()->refreshTable(userList);
+}
+
 Requester::ApiType Messenger::getApiType(const QUrl &url)
 {
     QString apiUrl = url.path();
@@ -118,6 +133,8 @@ Requester::ApiType Messenger::getApiType(const QUrl &url)
         return Requester::SEND_MESSAGE;
     if (apiUrl == "messageList")
         return Requester::REQUEST_MESSAGE_LIST;
+    if (apiUrl == "accountList")
+        return Requester::REQUEST_USER_LIST;
     /*
      * Another api types
      */
