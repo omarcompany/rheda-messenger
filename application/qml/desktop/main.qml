@@ -5,8 +5,8 @@ import elevons.team 1.0
 Window {
     id: window
     visible: true
-    width: 1280
-    height: 720
+    width: 1440
+    height: 1024
     title: qsTr("Rheda messenger")
     minimumWidth: 480
     minimumHeight: 720
@@ -16,6 +16,7 @@ Window {
     QtObject {
         id: constants
         readonly property string registrationText: qsTr("Create an account to start messanging")
+        readonly property string greenColor : "#4DA7B0"
     }
 
     Loader {

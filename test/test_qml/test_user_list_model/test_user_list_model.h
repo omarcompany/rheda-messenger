@@ -1,7 +1,7 @@
 #ifndef TESTUSERLISTMODEL_H
 #define TESTUSERLISTMODEL_H
 
-#include "userlistmodel.h"
+#include "contactmodel.h"
 
 #include <QtQuickTest>
 #include <QQmlEngine>
@@ -17,7 +17,7 @@ public slots:
     void qmlEngineAvailable(QQmlEngine *engine);
 
 private:
-    UserListModel m_userListModel;
+    ContactModel m_userListModel;
     QList<User> m_testUserListModel;
 };
 

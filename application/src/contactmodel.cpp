@@ -1,12 +1,12 @@
-#include "userlistmodel.h"
+#include "contactmodel.h"
 #include "databaseengine.h"
 
-UserListModel::UserListModel(QObject *parent) : QAbstractListModel(parent)
+ContactModel::ContactModel(QObject *parent) : QAbstractListModel(parent)
 {
     connectDatabase();
 }
 
-void UserListModel::setUserlist(const QList<User> &userList)
+void ContactModel::setUserList(const QList<User> &userList)
 {
     beginResetModel();
     m_userList = userList;
@@ -14,12 +14,12 @@ void UserListModel::setUserlist(const QList<User> &userList)
     endResetModel();
 }
 
-int UserListModel::count() const
+int ContactModel::count() const
 {
     return m_userList.count();
 }
 
-int UserListModel::rowCount(const QModelIndex &parent) const
+int ContactModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
         return 0;
@@ -28,7 +28,7 @@ int UserListModel::rowCount(const QModelIndex &parent) const
     return m_userList.count();
 }
 
-QVariant UserListModel::data(const QModelIndex &index, int role) const
+QVariant ContactModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
         return QVariant();
@@ -44,7 +44,7 @@ QVariant UserListModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> UserListModel::roleNames() const
+QHash<int, QByteArray> ContactModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
     roles[Id]   = "id";
@@ -53,11 +53,11 @@ QHash<int, QByteArray> UserListModel::roleNames() const
     return roles;
 }
 
-void UserListModel::connectDatabase()
+void ContactModel::connectDatabase()
 {
-    setUserlist(DatabaseEngine::instance()->getUserList());
+    setUserList(DatabaseEngine::instance()->getUserList());
     connect(DatabaseEngine::instance(), &DatabaseEngine::dataChanged, [this]() {
-        setUserlist(DatabaseEngine::instance()->getUserList());
+        setUserList(DatabaseEngine::instance()->getUserList());
     });
 }
 

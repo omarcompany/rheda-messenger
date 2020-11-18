@@ -9,12 +9,12 @@ CONFIG += c++14
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+      src/contactmodel.cpp \
       src/databaseengine.cpp \
       src/main.cpp \
       src/messagemodel.cpp \
       src/modelprovider.cpp \
       src/requester.cpp \
-      src/userlistmodel.cpp \
       src/uuidmanager.cpp \
       src/messenger.cpp \
       src/serializer.cpp
@@ -34,6 +34,7 @@ android: include($$(HOME)/Android/Sdk/android_openssl/openssl.pri)
 INCLUDEPATH += src
 
 HEADERS += \
+      src/contactmodel.h \
       src/databaseengine.h \
       src/message.h \
       src/messagemodel.h \
@@ -42,5 +43,4 @@ HEADERS += \
       src/messenger.h \
       src/serializer.h \
       src/user.h \
-      src/userlistmodel.h \
       src/uuidmanager.h

@@ -12,7 +12,8 @@
 #include "uuidmanager.h"
 #include "serializer.h"
 
-static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
+static const QString RHEDA_DOMAIN{"http://142.93.49.33:8000"};
+//static const QString RHEDA_DOMAIN{"https://rheda.herokuapp.com"};
 
 Requester::Requester(QObject *parent)
     : QObject{parent}

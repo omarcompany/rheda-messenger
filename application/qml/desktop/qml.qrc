@@ -3,7 +3,6 @@
         <file>main.qml</file>
         <file>RegistrationDialog.qml</file>
         <file>LoginDialog.qml</file>
-        <file>ContactList.qml</file>
         <file>ContactItem.qml</file>
         <file>EntryField.qml</file>
         <file>PasswordField.qml</file>
@@ -20,5 +19,7 @@
         <file>TypingArea.qml</file>
         <file>MessageList.qml</file>
         <file>MessageDelegate.qml</file>
+        <file>ContactDelegate.qml</file>
+        <file>ContactBackgroundItem.qml</file>
     </qresource>
 </RCC>

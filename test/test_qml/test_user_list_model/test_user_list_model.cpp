@@ -6,7 +6,7 @@ TestUserListModel::TestUserListModel()
     m_testUserListModel.append(User("3600000000","Ivan"));
     m_testUserListModel.append(User("3700000000","Error"));
 
-    m_userListModel.setUserlist(m_testUserListModel);
+    m_userListModel.setUserList(m_testUserListModel);
 }
 
 

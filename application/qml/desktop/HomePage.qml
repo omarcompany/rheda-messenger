@@ -6,40 +6,45 @@ Page {
     width: parent.width
     height: parent.height
 
-    header: Label {
-        padding: 20
-        horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 40
-        text: qsTr("Welcome to rheda messenger!")
+    Timer {
+        interval: 60000
+        running: true
+        repeat: true
+        onTriggered: Messenger.requestUserList()
+    }
+
+    header: ToolBar {
+        position: ToolBar.Header
 
         Button {
-            anchors {
-                right: parent.right
-                rightMargin: 50
-                verticalCenter: parent.verticalCenter
-            }
+            height: parent.height
+            anchors.right: parent.right
             text: qsTr("Sign out")
-            onClicked: {
-                Messenger.signOut();
+
+            onClicked: Messenger.signOut()
+
+            background: Rectangle {
+                color: parent.pressed ? "grey" : "skyblue"
             }
         }
     }
 
-    padding: 10
-    contentItem: MessageList {
-        model: ModelProvider.messageList
-    }
-    Component.onCompleted: Messenger.requestMessageList (Messenger.userId)
+    Component.onCompleted: Messenger.requestUserList()
 
-    footer: Control {
-        padding: 10
-        contentItem: Column {
-            spacing: 10
-            NewMessageForm {
-                width: parent.width*0.75
-            }
-
-            FloorBar {}
+    ListView {
+        width: 500
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
         }
+        model: ModelProvider.contactModel
+        clip: true
+        spacing: 1
+        delegate: ContactDelegate { }
+    }
+
+    footer: Label  {
+        text: qsTr("Your ID: %1").arg(Messenger.userId)
     }
 }
+
