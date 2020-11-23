@@ -21,5 +21,6 @@
         <file>MessageDelegate.qml</file>
         <file>ContactDelegate.qml</file>
         <file>ContactBackgroundItem.qml</file>
+        <file>ChatTitle.qml</file>
     </qresource>
 </RCC>

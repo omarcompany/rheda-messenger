@@ -62,11 +62,11 @@ void Messenger::sendMessage(const QString &recipientId, const QString &text)
     m_requester->sendRequest(Requester::POST, Requester::SEND_MESSAGE, jsonData);
 }
 
-void Messenger::requestMessageList(const QString &recipientId) const
+void Messenger::requestMessageList()
 {
     QVariantMap jsonData;
     jsonData["sender"] = UuidManager::getId();
-    jsonData["recipient"] = recipientId;
+    jsonData["recipient"] = userId();
 
     m_requester->sendRequest(Requester::GET, Requester::REQUEST_MESSAGE_LIST, jsonData);
 }

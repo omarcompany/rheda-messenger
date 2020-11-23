@@ -52,7 +52,7 @@ QVariant MessageModel::data(const QModelIndex &index, int role) const
     case TextRole:
         return m_messageList[index.row()].text;
     case Timestamp:
-        return m_messageList[index.row()].timestamp;
+        return (m_messageList[index.row()].timestamp.toLocalTime()).toString();
     default:
         return QVariant();
     }

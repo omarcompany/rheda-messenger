@@ -26,7 +26,7 @@ public:
     Q_INVOKABLE void signUp(const QString &name);
     Q_INVOKABLE void signOut();   
     Q_INVOKABLE void sendMessage(const QString &recipientId, const QString &text);
-    Q_INVOKABLE void requestMessageList(const QString &recipientId) const;
+    Q_INVOKABLE void requestMessageList();
     Q_INVOKABLE void requestUserList();
 
     QString userId() const;

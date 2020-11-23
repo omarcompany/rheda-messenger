@@ -2,6 +2,8 @@ import QtQuick 2.13
 import QtGraphicalEffects 1.12
 
 Rectangle {
+    id: root
+    signal leftClicked()
 
     RadialGradient {
         anchors.fill: parent
@@ -15,5 +17,6 @@ Rectangle {
         id: targetArea
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: root.leftClicked()
     }
 }

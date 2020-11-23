@@ -3,33 +3,11 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import elevons.team 1.0
 
-GridLayout {
-    columns: 2
-    rows: 2
-
-    TextField {
-        id: recipientField
-        font.pixelSize: 11
-        placeholderText: qsTr("Enter recipient id...")
-        placeholderTextColor: "#00B4AB"
-        selectByMouse: true
-        Layout.fillWidth: true
-    }
-
-    RoundButton {
-        radius: 5
-        text: qsTr("Send message")
-        enabled: recipientField.text !== "" && typingArea.message !== ""
-        onClicked: {
-            Messenger.sendMessage(recipientField.text, typingArea.message)
-            typingArea.clear()
-        }
-    }
-
+RowLayout {
     TypingArea {
         id: typingArea
         height: 60
-        width: parent.width
+        width: parent.width - button.width
         pointSize: 11
         placeholderTextColor: "#00B4AB"
         borderColor: "#21be2b"
@@ -38,6 +16,16 @@ GridLayout {
         Layout.row: 1
     }
 
+    RoundButton {
+        id: button
+        radius: 5
+        text: qsTr("Send message")
+        enabled: typingArea.message !== ""
+        onClicked: {
+            Messenger.sendMessage(recipientID, typingArea.message)
+            typingArea.clear()
+        }
+    }
 }
 
 
