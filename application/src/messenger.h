@@ -42,7 +42,6 @@ private:
     void handleSignupResponse(QNetworkReply *reply);
     void handleRequestMessageListResponse(QNetworkReply *reply);
     void handleRequestUserListResponse(QNetworkReply *reply);
-    Requester::ApiType getApiType(const QUrl &url);
     void handleError(int code);
     void setUserId(QString userId);
 
