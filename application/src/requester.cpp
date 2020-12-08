@@ -20,7 +20,7 @@ Requester::Requester(QObject *parent)
     , m_manager{new QNetworkAccessManager(this)}
 {}
 
-QString Requester::getApi(Requester::ApiType api)
+QString Requester::apiUrlToString(Requester::ApiUrl api)
 {
     switch (api) {
     case SIGN_UP:
@@ -34,17 +34,32 @@ QString Requester::getApi(Requester::ApiType api)
     }
 }
 
-QNetworkRequest Requester::createRequest(const Requester::ApiType &api)
+Requester::ApiUrl Requester::stringToApiUrl(const QString &apiUrl)
+{
+    if (apiUrl == "signup")
+        return Requester::SIGN_UP;
+    if (apiUrl == "message")
+        return Requester::SEND_MESSAGE;
+    if (apiUrl == "messageList")
+        return Requester::REQUEST_MESSAGE_LIST;
+    if (apiUrl == "accountList")
+        return Requester::REQUEST_USER_LIST;
+    /*
+     * Another api types
+     */
+}
+
+QNetworkRequest Requester::createRequest(const Requester::ApiUrl &api)
 {
     QNetworkRequest request;
-    QString url = RHEDA_DOMAIN + getApi(api);
+    QString url = RHEDA_DOMAIN + apiUrlToString(api);
     request.setUrl(QUrl(url));
-    request.setRawHeader("Content-Type","application/json");
+    request.setRawHeader("Content-Type", "application/json");
 
     return request;
 }
 
-void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData)
+void Requester::sendRequest(const Requester::RequestType type, const Requester::ApiUrl api, const QVariantMap &jsonData)
 {
     QNetworkRequest request = createRequest(api);
     QNetworkReply *reply;

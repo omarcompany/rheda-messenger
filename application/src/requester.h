@@ -12,7 +12,7 @@ class Requester : public QObject
     Q_OBJECT
 public:
 
-    enum ApiType {
+    enum ApiUrl {
         SIGN_UP,
         SEND_MESSAGE,
         REQUEST_MESSAGE_LIST,
@@ -29,14 +29,15 @@ public:
 
     explicit Requester(QObject *parent = nullptr);
 
-    void sendRequest(const Requester::RequestType type, const Requester::ApiType api, const QVariantMap &jsonData);
+    void sendRequest(const Requester::RequestType type, const Requester::ApiUrl api, const QVariantMap &jsonData);
+    static QString apiUrlToString(Requester::ApiUrl api);
+    static ApiUrl stringToApiUrl(const QString &url);
 
 signals:
     void replied(QNetworkReply *reply);
 
 private:
-    QNetworkRequest createRequest(const Requester::ApiType &api);
-    QString getApi(Requester::ApiType api);
+    QNetworkRequest createRequest(const Requester::ApiUrl &api);
 
     QNetworkAccessManager *m_manager;
 };

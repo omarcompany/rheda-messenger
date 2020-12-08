@@ -80,7 +80,9 @@ void Messenger::handleResponse(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::finished, [=](){
         if (reply->error() == QNetworkReply::NoError) {
-            switch (getApiType(reply->url())) {
+            QString urlPath = reply->url().path().split("/").last();
+            Requester::ApiUrl api = Requester::stringToApiUrl(urlPath);
+            switch (api) {
             case Requester::SIGN_UP:
                 handleSignupResponse(reply);
                 break;
@@ -121,24 +123,6 @@ void Messenger::handleRequestUserListResponse(QNetworkReply *reply)
 {
     QList<User> userList = Serializer::deserializeToUserList(reply->readAll());
     DatabaseEngine::instance()->refreshTable(userList);
-}
-
-Requester::ApiType Messenger::getApiType(const QUrl &url)
-{
-    QString apiUrl = url.path();
-    apiUrl = apiUrl.split("/").last();
-
-    if (apiUrl == "signup")
-        return Requester::SIGN_UP;
-    if (apiUrl == "message")
-        return Requester::SEND_MESSAGE;
-    if (apiUrl == "messageList")
-        return Requester::REQUEST_MESSAGE_LIST;
-    if (apiUrl == "accountList")
-        return Requester::REQUEST_USER_LIST;
-    /*
-     * Another api types
-     */
 }
 
 void Messenger::handleError(int code)
